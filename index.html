@@ -1,0 +1,4587 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Sovereign — trading jurnal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #edeff2;
+        --card: #ffffff;
+        --card2: #f5f6f8;
+        --glass: rgba(255, 255, 255, 0.78);
+        --line: rgba(16, 24, 40, 0.09);
+        --line2: rgba(16, 24, 40, 0.18);
+        --tx: #0e131b;
+        --tx2: #4a5566;
+        --tx3: #7a8494;
+        --gain: #047857;
+        --loss: #be123c;
+        --gold: #8a6a12;
+        --be: #7a8494;
+        --gainsoft: rgba(4, 120, 87, 0.11);
+        --losssoft: rgba(190, 18, 60, 0.09);
+        --goldsoft: rgba(138, 106, 18, 0.11);
+        --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+        --sans:
+          "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        --r: 10px;
+        --rl: 16px;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0a0d12;
+          --card: #121824;
+          --card2: #171f2e;
+          --glass: rgba(18, 24, 36, 0.74);
+          --line: rgba(255, 255, 255, 0.07);
+          --line2: rgba(255, 255, 255, 0.15);
+          --tx: #e9ecf1;
+          --tx2: #9aa4b5;
+          --tx3: #667085;
+          --gain: #10b981;
+          --loss: #f43f5e;
+          --gold: #d4af37;
+          --be: #667085;
+          --gainsoft: rgba(16, 185, 129, 0.13);
+          --losssoft: rgba(244, 63, 94, 0.13);
+          --goldsoft: rgba(212, 175, 55, 0.12);
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #0a0d12;
+        --card: #121824;
+        --card2: #171f2e;
+        --glass: rgba(18, 24, 36, 0.74);
+        --line: rgba(255, 255, 255, 0.07);
+        --line2: rgba(255, 255, 255, 0.15);
+        --tx: #e9ecf1;
+        --tx2: #9aa4b5;
+        --tx3: #667085;
+        --gain: #10b981;
+        --loss: #f43f5e;
+        --gold: #d4af37;
+        --be: #667085;
+        --gainsoft: rgba(16, 185, 129, 0.13);
+        --losssoft: rgba(244, 63, 94, 0.13);
+        --goldsoft: rgba(212, 175, 55, 0.12);
+        color-scheme: dark;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--tx);
+        font-family: var(--sans);
+        font-size: 14px;
+        line-height: 1.5;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0 0 auto;
+        height: env(safe-area-inset-top, 0px);
+        z-index: 30;
+        background: var(--glass);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+        color: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      :focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: 2px;
+      }
+      img {
+        max-width: 100%;
+      }
+      .app {
+        display: grid;
+        grid-template-columns: 236px minmax(0, 1fr);
+        min-height: 100vh;
+      }
+      .side {
+        position: sticky;
+        top: env(safe-area-inset-top, 0px);
+        height: calc(100vh - env(safe-area-inset-top, 0px));
+        border-right: 1px solid var(--line);
+        padding: 22px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 2px 10px 22px;
+      }
+      .brand .mk {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        border: 1px solid var(--gold);
+        display: grid;
+        place-items: center;
+        color: var(--gold);
+      }
+      .brand b {
+        font-family: var(--serif);
+        font-size: 23px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      .brand small {
+        display: block;
+        color: var(--tx3);
+        font-size: 11px;
+        margin-top: -4px;
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 9px 12px;
+        border-radius: var(--r);
+        border: 0;
+        background: none;
+        color: var(--tx2);
+        text-align: left;
+        width: 100%;
+        font-weight: 500;
+        position: relative;
+      }
+      .nav:hover {
+        background: var(--card2);
+        color: var(--tx);
+      }
+      .nav.on {
+        background: var(--card);
+        color: var(--tx);
+        box-shadow: inset 0 0 0 1px var(--line);
+      }
+      .nav.on::before {
+        content: "";
+        position: absolute;
+        left: -14px;
+        top: 9px;
+        bottom: 9px;
+        width: 2px;
+        background: var(--gold);
+      }
+      .nav svg {
+        width: 18px;
+        height: 18px;
+        flex: none;
+      }
+      .side .foot {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .main {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .top {
+        position: sticky;
+        top: env(safe-area-inset-top, 0px);
+        z-index: 20;
+        background: var(--glass);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 28px;
+        flex-wrap: wrap;
+      }
+      .top h1 {
+        font-family: var(--serif);
+        font-weight: 600;
+        font-size: 26px;
+        margin: 0;
+        letter-spacing: 0.01em;
+        flex: 1;
+        min-width: 140px;
+      }
+      .view {
+        padding: 24px 28px 48px;
+        max-width: 1320px;
+        width: 100%;
+      }
+      .enter {
+        animation: enter 0.26s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      @keyframes enter {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .enter {
+          animation: none;
+        }
+        .pulse {
+          animation: none !important;
+        }
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--rl);
+        padding: 18px 20px;
+        min-width: 0;
+      }
+      .card h3 {
+        margin: 0 0 12px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--tx2);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .card h3 .sp {
+        flex: 1;
+      }
+      .grid {
+        display: grid;
+        gap: 14px;
+      }
+      .g2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .g4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      .g32 {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      }
+      .kpi .l {
+        font-size: 12px;
+        color: var(--tx3);
+      }
+      .kpi .v {
+        font-size: 21px;
+        font-weight: 600;
+        margin-top: 2px;
+        letter-spacing: -0.01em;
+      }
+      .kpi .s {
+        font-size: 12px;
+        color: var(--tx3);
+        margin-top: 2px;
+      }
+      .up {
+        color: var(--gain);
+      }
+      .dn {
+        color: var(--loss);
+      }
+      .mut {
+        color: var(--tx3);
+      }
+      .gold {
+        color: var(--gold);
+      }
+      .hero {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px 40px;
+        align-items: flex-end;
+        padding: 22px 24px;
+        border-radius: var(--rl);
+        border: 1px solid var(--line);
+        background: var(--card);
+        margin-bottom: 14px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--gold);
+      }
+      .hero .big {
+        font-family: var(--serif);
+        font-size: 52px;
+        line-height: 1;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .hero .lbl {
+        font-size: 12px;
+        color: var(--tx3);
+        margin-bottom: 6px;
+      }
+      .hero .sub {
+        display: flex;
+        gap: 28px;
+        flex-wrap: wrap;
+      }
+      .hero .sub div b {
+        display: block;
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        padding: 3px 9px;
+        border-radius: 999px;
+        border: 1px solid var(--line2);
+        color: var(--tx2);
+        white-space: nowrap;
+        background: none;
+      }
+      .chip.g {
+        border-color: transparent;
+        background: var(--gainsoft);
+        color: var(--gain);
+      }
+      .chip.r {
+        border-color: transparent;
+        background: var(--losssoft);
+        color: var(--loss);
+      }
+      .chip.au {
+        border-color: transparent;
+        background: var(--goldsoft);
+        color: var(--gold);
+      }
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 14px;
+        border-radius: var(--r);
+        border: 1px solid var(--line2);
+        background: var(--card);
+        font-weight: 500;
+        font-size: 13px;
+      }
+      .btn:hover {
+        border-color: var(--tx3);
+      }
+      .btn.pri {
+        background: var(--gold);
+        color: #0a0d12;
+        border-color: var(--gold);
+      }
+      .btn.pri:hover {
+        filter: brightness(1.06);
+      }
+      .btn.sm {
+        padding: 5px 10px;
+        font-size: 12px;
+      }
+      .btn.ghost {
+        border-color: transparent;
+        background: none;
+      }
+      .btn svg {
+        width: 15px;
+        height: 15px;
+      }
+      select,
+      input[type="text"],
+      input[type="number"],
+      input[type="date"],
+      input[type="password"],
+      textarea {
+        background: var(--card2);
+        border: 1px solid var(--line);
+        border-radius: var(--r);
+        padding: 8px 10px;
+        width: 100%;
+        min-width: 0;
+      }
+      textarea {
+        min-height: 96px;
+        resize: vertical;
+        line-height: 1.55;
+      }
+      select:focus,
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+      label.f {
+        display: block;
+        font-size: 12px;
+        color: var(--tx3);
+        margin-bottom: 4px;
+      }
+      .tw {
+        overflow-x: auto;
+        margin: 0 -4px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      th {
+        font-weight: 500;
+        color: var(--tx3);
+        text-align: left;
+        padding: 7px 8px;
+        border-bottom: 1px solid var(--line);
+        white-space: nowrap;
+        font-size: 12px;
+      }
+      td {
+        padding: 9px 8px;
+        border-bottom: 1px solid var(--line);
+        white-space: nowrap;
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      td.r,
+      th.r {
+        text-align: right;
+      }
+      .side-l {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 1px 7px;
+        border-radius: 5px;
+      }
+      .side-l.b {
+        background: var(--gainsoft);
+        color: var(--gain);
+      }
+      .side-l.s {
+        background: var(--losssoft);
+        color: var(--loss);
+      }
+      .tag {
+        display: inline-block;
+        font-size: 11px;
+        padding: 1px 7px;
+        border-radius: 5px;
+        background: var(--card2);
+        color: var(--tx2);
+        margin: 1px 3px 1px 0;
+        border: 1px solid var(--line);
+      }
+      .tag.x {
+        background: var(--losssoft);
+        color: var(--loss);
+        border-color: transparent;
+      }
+      .chartbox {
+        height: 280px;
+        position: relative;
+      }
+      .empty {
+        padding: 28px 10px;
+        text-align: center;
+        color: var(--tx3);
+        font-size: 13px;
+      }
+      .bars .row {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr) 30px;
+        gap: 10px;
+        align-items: center;
+        font-size: 12px;
+        margin: 6px 0;
+      }
+      .bars .tr {
+        height: 6px;
+        border-radius: 3px;
+        background: var(--card2);
+        overflow: hidden;
+      }
+      .bars .tr i {
+        display: block;
+        height: 100%;
+        background: var(--loss);
+      }
+      /* calendar */
+      .calhead {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+      .calhead h2 {
+        font-family: var(--serif);
+        font-size: 28px;
+        font-weight: 600;
+        margin: 0 8px 0 0;
+      }
+      .cal {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr)) minmax(0, 1.15fr);
+        gap: 6px;
+      }
+      .cal .wd {
+        font-size: 11px;
+        color: var(--tx3);
+        padding: 0 4px 2px;
+      }
+      .cell {
+        min-height: 84px;
+        border-radius: var(--r);
+        border: 1px solid var(--line);
+        background: var(--card);
+        padding: 7px 8px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        transition: border-color 0.15s;
+      }
+      .cell:hover {
+        border-color: var(--line2);
+      }
+      .cell .d {
+        font-size: 12px;
+        color: var(--tx3);
+      }
+      .cell .p {
+        font-weight: 600;
+        font-size: 14px;
+        margin-top: auto;
+      }
+      .cell .n {
+        font-size: 11px;
+        color: var(--tx3);
+      }
+      .cell.out {
+        opacity: 0.35;
+      }
+      .cell.win {
+        background: var(--gainsoft);
+        border-color: transparent;
+      }
+      .cell.win .p {
+        color: var(--gain);
+      }
+      .cell.loss {
+        background: var(--losssoft);
+        border-color: transparent;
+      }
+      .cell.loss .p {
+        color: var(--loss);
+      }
+      .cell.flat .p {
+        color: var(--be);
+      }
+      .cell.sel {
+        box-shadow: 0 0 0 2px var(--gold);
+      }
+      .cell.jr::after {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--gold);
+        position: relative;
+        align-self: flex-end;
+        margin-top: -10px;
+      }
+      .wk {
+        border-radius: var(--r);
+        border: 1px dashed var(--line2);
+        padding: 7px 9px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2px;
+        font-size: 11px;
+        color: var(--tx3);
+      }
+      .wk b {
+        font-size: 14px;
+      }
+      .daypanel {
+        margin-top: 14px;
+      }
+      /* journal */
+      .score {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+      .score button {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: var(--card2);
+        font-weight: 600;
+        font-size: 13px;
+      }
+      .score button.on {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #0a0d12;
+      }
+      .rules label {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 7px 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .rules label:last-child {
+        border-bottom: 0;
+      }
+      .rules input {
+        accent-color: var(--gold);
+        margin-top: 3px;
+        width: 16px;
+        height: 16px;
+        flex: none;
+      }
+      .tagpick {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .tagpick button {
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--line2);
+        background: none;
+        color: var(--tx2);
+      }
+      .tagpick button.on {
+        background: var(--goldsoft);
+        color: var(--gold);
+        border-color: transparent;
+      }
+      .tagpick button.on.x {
+        background: var(--losssoft);
+        color: var(--loss);
+      }
+      .shots {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .shot {
+        border: 1px dashed var(--line2);
+        border-radius: var(--r);
+        min-height: 150px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: var(--tx3);
+        font-size: 12px;
+        position: relative;
+        overflow: hidden;
+        background: var(--card2);
+      }
+      .shot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        inset: 0;
+      }
+      .shot .rm {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        z-index: 2;
+      }
+      .shot input {
+        display: none;
+      }
+      .fgrid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .saved {
+        font-size: 12px;
+        color: var(--tx3);
+      }
+      /* charts */
+      .pills {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+      .pill {
+        padding: 7px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line2);
+        background: var(--card);
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--tx2);
+      }
+      .pill.on {
+        border-color: var(--gold);
+        color: var(--tx);
+        box-shadow: inset 0 0 0 1px var(--gold);
+      }
+      .pill small {
+        color: var(--tx3);
+        font-weight: 400;
+        margin-left: 5px;
+      }
+      .bigchart {
+        height: 460px;
+      }
+      .lv {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+      }
+      .lv b {
+        font-family: var(--serif);
+        font-size: 34px;
+        font-weight: 600;
+      }
+      .legend {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        font-size: 12px;
+        color: var(--tx2);
+        margin-top: 10px;
+      }
+      .legend i {
+        display: inline-block;
+        width: 14px;
+        height: 2px;
+        vertical-align: middle;
+        margin-right: 6px;
+      }
+      .trow {
+        cursor: pointer;
+      }
+      .trow:hover td {
+        background: var(--card2);
+      }
+      .trow.on td {
+        background: var(--goldsoft);
+      }
+      /* news */
+      .countdown {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+        padding: 18px 22px;
+        border-radius: var(--rl);
+        border: 1px solid var(--line);
+        background: var(--card);
+        margin-bottom: 14px;
+      }
+      .countdown .t {
+        font-family: var(--serif);
+        font-size: 40px;
+        font-weight: 600;
+        line-height: 1;
+      }
+      .countdown.alert {
+        border-color: var(--loss);
+        background: var(--losssoft);
+      }
+      .pulse {
+        animation: pulse 1.4s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        50% {
+          opacity: 0.35;
+        }
+      }
+      .imp {
+        display: inline-flex;
+        gap: 2px;
+      }
+      .imp i {
+        width: 5px;
+        height: 12px;
+        border-radius: 1px;
+        background: var(--line2);
+      }
+      .imp.h i {
+        background: var(--loss);
+      }
+      .imp.m i:nth-child(-n + 2) {
+        background: var(--gold);
+      }
+      .imp.l i:first-child {
+        background: var(--tx3);
+      }
+      .daysep td {
+        background: var(--card2);
+        font-weight: 600;
+        font-size: 12px;
+        color: var(--tx2);
+      }
+      .past td {
+        color: var(--tx3);
+      }
+      .past td.act {
+        color: var(--tx);
+      }
+      /* academy */
+      .lvl {
+        margin-bottom: 22px;
+      }
+      .lvl h2 {
+        font-family: var(--serif);
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0 0 2px;
+      }
+      .lvl p.d {
+        margin: 0 0 12px;
+        color: var(--tx3);
+        font-size: 13px;
+      }
+      .arts {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 12px;
+      }
+      .art {
+        text-align: left;
+        border: 1px solid var(--line);
+        background: var(--card);
+        border-radius: var(--rl);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-height: 128px;
+      }
+      .art:hover {
+        border-color: var(--line2);
+      }
+      .art .n {
+        font-size: 12px;
+        color: var(--tx3);
+      }
+      .art b {
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .art span {
+        font-size: 12px;
+        color: var(--tx3);
+      }
+      .art .done {
+        color: var(--gain);
+        font-size: 12px;
+        margin-top: auto;
+      }
+      .progress {
+        height: 4px;
+        border-radius: 2px;
+        background: var(--card2);
+        overflow: hidden;
+        margin: 6px 0 2px;
+      }
+      .progress i {
+        display: block;
+        height: 100%;
+        background: var(--gold);
+      }
+      /* modal */
+      .scrim {
+        position: fixed;
+        inset: 0;
+        background: rgba(5, 7, 10, 0.55);
+        z-index: 50;
+        display: flex;
+        justify-content: flex-end;
+        animation: fade 0.2s;
+      }
+      @keyframes fade {
+        from {
+          opacity: 0;
+        }
+      }
+      .drawer {
+        width: min(680px, 100%);
+        height: 100%;
+        background: var(--card);
+        border-left: 1px solid var(--line);
+        overflow-y: auto;
+        padding: calc(22px + env(safe-area-inset-top, 0px)) 28px
+          calc(40px + env(safe-area-inset-bottom, 0px));
+        animation: slide 0.26s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      @keyframes slide {
+        from {
+          transform: translateX(24px);
+          opacity: 0.4;
+        }
+      }
+      .drawer .hd {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .drawer .hd h2 {
+        font-family: var(--serif);
+        font-size: 30px;
+        font-weight: 600;
+        margin: 0;
+        line-height: 1.1;
+        flex: 1;
+      }
+      .prose {
+        font-size: 15px;
+        line-height: 1.75;
+        max-width: 68ch;
+      }
+      .prose h4 {
+        font-size: 15px;
+        margin: 22px 0 6px;
+      }
+      .prose p {
+        margin: 0 0 12px;
+      }
+      .prose ul {
+        padding-left: 20px;
+        margin: 0 0 12px;
+      }
+      .prose li {
+        margin: 3px 0;
+      }
+      .prose .fx {
+        background: var(--card2);
+        border: 1px solid var(--line);
+        border-radius: var(--r);
+        padding: 12px 14px;
+        font-weight: 600;
+        margin: 10px 0 14px;
+      }
+      .prose .note {
+        border-left: 2px solid var(--gold);
+        padding: 4px 0 4px 14px;
+        color: var(--tx2);
+        margin: 14px 0;
+      }
+      .prose svg {
+        width: 100%;
+        height: auto;
+        background: var(--card2);
+        border-radius: var(--r);
+        border: 1px solid var(--line);
+        margin: 8px 0 14px;
+      }
+      .acct {
+        border: 1px solid var(--line);
+        border-radius: var(--rl);
+        padding: 14px 16px;
+        margin-bottom: 10px;
+      }
+      .acct.on {
+        border-color: var(--gold);
+      }
+      .steps div {
+        font-size: 13px;
+        padding: 3px 0;
+        color: var(--tx3);
+      }
+      .steps div.ok {
+        color: var(--gain);
+      }
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+        transform: translateX(-50%);
+        background: var(--tx);
+        color: var(--bg);
+        padding: 9px 16px;
+        border-radius: 999px;
+        font-size: 13px;
+        z-index: 60;
+        animation: fade 0.2s;
+      }
+      .bnav {
+        display: none;
+      }
+      @media (max-width: 1100px) {
+        .fgrid[style] {
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+        .g4 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .g32 {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .fgrid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 860px) {
+        .app {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .side {
+          display: none;
+        }
+        .top {
+          padding: 10px 16px;
+        }
+        .top h1 {
+          font-size: 22px;
+        }
+        .view {
+          padding: 16px 14px calc(96px + env(safe-area-inset-bottom, 0px));
+        }
+        .bnav {
+          display: grid;
+          grid-template-columns: repeat(7, minmax(0, 1fr));
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 40;
+          background: var(--glass);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border-top: 1px solid var(--line);
+          padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+        }
+        .bnav button {
+          border: 0;
+          background: none;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 2px;
+          font-size: 10px;
+          color: var(--tx3);
+          padding: 4px 0;
+        }
+        .bnav button.on {
+          color: var(--gold);
+        }
+        .bnav svg {
+          width: 20px;
+          height: 20px;
+        }
+        .hero {
+          padding: 18px;
+        }
+        .hero .big {
+          font-size: 40px;
+        }
+        .g2 {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .cal {
+          gap: 3px;
+        }
+        .cell {
+          min-height: 58px;
+          padding: 4px 5px;
+        }
+        .cell .p {
+          font-size: 11px;
+        }
+        .cell .n {
+          display: none;
+        }
+        .wk {
+          padding: 4px 5px;
+          font-size: 10px;
+        }
+        .wk b {
+          font-size: 11px;
+        }
+        .wk span {
+          display: none;
+        }
+        .bigchart {
+          height: 360px;
+        }
+        .chartbox {
+          height: 230px;
+        }
+        .drawer {
+          padding-left: 18px;
+          padding-right: 18px;
+        }
+        .countdown .t {
+          font-size: 32px;
+        }
+        .shots {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side" id="side"></aside>
+      <div class="main">
+        <header class="top" id="top"></header>
+        <main class="view" id="view"></main>
+      </div>
+    </div>
+    <nav class="bnav" id="bnav"></nav>
+    <div id="modal"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+    <script>
+      (function () {
+        "use strict";
+        /* ---------- helpers ---------- */
+        const $ = (s) => document.querySelector(s);
+        const esc = (s) =>
+          String(s == null ? "" : s).replace(
+            /[&<>"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[c],
+          );
+        const MON = [
+          "Yanvar",
+          "Fevral",
+          "Mart",
+          "Aprel",
+          "May",
+          "Iyun",
+          "Iyul",
+          "Avgust",
+          "Sentabr",
+          "Oktabr",
+          "Noyabr",
+          "Dekabr",
+        ];
+        const WD = ["Du", "Se", "Ch", "Pa", "Ju", "Sh", "Ya"];
+        const WDL = [
+          "Yakshanba",
+          "Dushanba",
+          "Seshanba",
+          "Chorshanba",
+          "Payshanba",
+          "Juma",
+          "Shanba",
+        ];
+        const pad = (n) => String(n).padStart(2, "0");
+        const ymd = (d) =>
+          d.getFullYear() +
+          "-" +
+          pad(d.getMonth() + 1) +
+          "-" +
+          pad(d.getDate());
+        const parseYmd = (s) => {
+          const [y, m, d] = s.split("-").map(Number);
+          return new Date(y, m - 1, d);
+        };
+        const hm = (t) => {
+          const d = new Date(t);
+          return pad(d.getHours()) + ":" + pad(d.getMinutes());
+        };
+        const dShort = (t) => {
+          const d = new Date(t);
+          return d.getDate() + " " + MON[d.getMonth()].slice(0, 3);
+        };
+        function money(v, cur, sign) {
+          cur = cur || "USD";
+          const a = Math.abs(v);
+          const s = a.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+          const sym =
+            cur === "USD"
+              ? "$"
+              : cur === "EUR"
+                ? "€"
+                : cur === "GBP"
+                  ? "£"
+                  : "";
+          const body = sym ? sym + s : s + " " + cur;
+          if (sign) return (v > 0 ? "+" : v < 0 ? "−" : "") + body;
+          return (v < 0 ? "−" : "") + body;
+        }
+        function compact(v) {
+          const a = Math.abs(v);
+          const s =
+            a >= 1000
+              ? (a / 1000).toFixed(a >= 10000 ? 0 : 1) + "k"
+              : a >= 100
+                ? Math.round(a) + ""
+                : a.toFixed(0);
+          return (v > 0 ? "+" : v < 0 ? "−" : "") + s;
+        }
+        const cls = (v) => (v > 0 ? "up" : v < 0 ? "dn" : "mut");
+        function fmtP(p, sym) {
+          return Number(p).toLocaleString("en-US", {
+            minimumFractionDigits: SYMS[sym] ? SYMS[sym].dp : 2,
+            maximumFractionDigits: SYMS[sym] ? SYMS[sym].dp : 2,
+          });
+        }
+        function dur(min) {
+          if (min < 60) return Math.round(min) + " daq";
+          const h = Math.floor(min / 60),
+            m = Math.round(min % 60);
+          return h + " soat" + (m ? " " + m + " daq" : "");
+        }
+        function rngF(seed) {
+          return function () {
+            seed |= 0;
+            seed = (seed + 0x6d2b79f5) | 0;
+            let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          };
+        }
+        function gauss(r) {
+          let u = 0,
+            v = 0;
+          while (!u) u = r();
+          while (!v) v = r();
+          return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+        }
+        const uid = () => Math.random().toString(36).slice(2, 10);
+        function toast(msg) {
+          const t = document.createElement("div");
+          t.className = "toast";
+          t.textContent = msg;
+          document.body.appendChild(t);
+          setTimeout(() => t.remove(), 2200);
+        }
+
+        const I = {
+          dash: '<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>',
+          cal: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+          jour: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+          chart:
+            '<path d="M3 3v18h18"/><path d="M9 5v3"/><rect x="7" y="8" width="4" height="6" rx="1"/><path d="M9 14v3"/><path d="M17 3v2"/><rect x="15" y="5" width="4" height="7" rx="1"/><path d="M17 12v3"/>',
+          news: '<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>',
+          acad: '<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>',
+          sync: '<path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/>',
+          plus: '<path d="M12 5v14M5 12h14"/>',
+          x: '<path d="M18 6 6 18M6 6l12 12"/>',
+          cl: '<path d="m15 18-6-6 6-6"/>',
+          cr: '<path d="m9 18 6-6-6-6"/>',
+          link: '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+          up: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5M12 3v12"/>',
+          trash: '<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>',
+          wallet:
+            '<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
+          bell: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
+          check: '<path d="M20 6 9 17l-5-5"/>',
+          moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
+          crown:
+            '<path d="m2 6 4 11h12l4-11-6 5-4-7-4 7-6-5Z"/><path d="M6 21h12"/>',
+          flag: '<path d="M4 22V4"/><path d="M4 4c3-2 6 0 8 0s5-2 8 0v10c-3-2-6 0-8 0s-5-2-8 0"/>',
+          dl: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5M12 15V3"/>',
+          calc: '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h8"/>',
+          edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+        };
+        const ic = (n, s) =>
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"' +
+          (s ? ' style="width:' + s + "px;height:" + s + 'px"' : "") +
+          ">" +
+          I[n] +
+          "</svg>";
+
+        /* ---------- market model (mock) ---------- */
+        const SYMS = {
+          XAUUSD: {
+            name: "XAU/USD",
+            cls: "Oltin",
+            p0: 4085,
+            vol: 0.0021,
+            cv: 100,
+            dp: 2,
+            sl: 0.0025,
+          },
+          EURUSD: {
+            name: "EUR/USD",
+            cls: "Forex",
+            p0: 1.164,
+            vol: 0.0011,
+            cv: 100000,
+            dp: 5,
+            sl: 0.0018,
+          },
+          BTCUSD: {
+            name: "BTC/USD",
+            cls: "Kripto",
+            p0: 112400,
+            vol: 0.0052,
+            cv: 1,
+            dp: 1,
+            sl: 0.006,
+            crypto: true,
+          },
+          NAS100: {
+            name: "NASDAQ 100",
+            cls: "Indeks",
+            p0: 24750,
+            vol: 0.0024,
+            cv: 1,
+            dp: 1,
+            sl: 0.003,
+          },
+          SPX500: {
+            name: "S&P 500",
+            cls: "Indeks",
+            p0: 6720,
+            vol: 0.0017,
+            cv: 1,
+            dp: 1,
+            sl: 0.0025,
+          },
+          UKOIL: {
+            name: "Brent",
+            cls: "Xomashyo",
+            p0: 66.4,
+            vol: 0.0038,
+            cv: 100,
+            dp: 2,
+            sl: 0.006,
+          },
+        };
+        const H = 3600000;
+        const T0 = Date.UTC(2026, 7, 3, 0);
+        const TEND_FX = Date.UTC(2026, 9, 16, 21);
+        const TEND_CR = Date.UTC(2026, 9, 18, 6);
+        const isOpenHour = (t, crypto) => {
+          if (crypto) return true;
+          const d = new Date(t);
+          const w = d.getUTCDay(),
+            h = d.getUTCHours();
+          if (w === 6) return false;
+          if (w === 0 && h < 22) return false;
+          if (w === 5 && h >= 21) return false;
+          return true;
+        };
+        const SERIES = {};
+        function series(sym) {
+          if (SERIES[sym]) return SERIES[sym];
+          const c = SYMS[sym];
+          const r = rngF(
+            sym.split("").reduce((a, ch) => a * 31 + ch.charCodeAt(0), 7),
+          );
+          const bars = [],
+            idx = new Map();
+          let p = c.p0 * (0.985 + r() * 0.03),
+            drift = 0;
+          const end = c.crypto ? TEND_CR : TEND_FX;
+          for (let t = T0, i = 0; t <= end; t += H) {
+            if (!isOpenHour(t, c.crypto)) continue;
+            if (i % 110 === 0) drift = (r() - 0.5) * c.vol * 0.12;
+            i++;
+            const rev = Math.log(c.p0 / p) * 0.006;
+            const h = new Date(t).getUTCHours();
+            const sess = h >= 7 && h <= 16 ? 1.35 : 0.7;
+            const o = p;
+            const ch = gauss(r) * c.vol * sess + drift + rev;
+            const cl = o * Math.exp(ch);
+            const hi =
+              Math.max(o, cl) * (1 + Math.abs(gauss(r)) * c.vol * 0.45 * sess);
+            const lo =
+              Math.min(o, cl) * (1 - Math.abs(gauss(r)) * c.vol * 0.45 * sess);
+            const b = { time: t / 1000, open: o, high: hi, low: lo, close: cl };
+            idx.set(t, bars.length);
+            bars.push(b);
+            p = cl;
+          }
+          SERIES[sym] = { bars, idx };
+          return SERIES[sym];
+        }
+        function barAt(sym, t) {
+          const s = series(sym);
+          const k = Math.floor(t / H) * H;
+          const i = s.idx.get(k);
+          return i == null ? null : s.bars[i];
+        }
+        function lastPrice(sym) {
+          const b = series(sym).bars;
+          return b[b.length - 1].close;
+        }
+
+        /* ---------- accounts & trades ---------- */
+        const MIST = [
+          "FOMO",
+          "SL siljitildi",
+          "Erta yopildi",
+          "Revenge",
+          "Overtrade",
+          "Yangilik paytida",
+          "Rejasiz kirish",
+        ];
+        const SETUPS = [
+          "OB retest",
+          "Liquidity sweep",
+          "QM",
+          "SNR flip",
+          "FVG fill",
+          "BOS pullback",
+          "Killzone breakout",
+        ];
+        const RULES = [
+          "Har savdoda risk maksimal 1%",
+          "Kuniga maksimal 2 ta savdo",
+          "SL va TP kirishdan oldin, RR kamida 1:2",
+          "1R da SL breakeven’ga, 50% yopiladi",
+          "Kunlik −3% bo‘lsa terminal yopiladi",
+          "Zarardan keyin “qaytarish” savdosi yo‘q",
+          "Har savdo jurnalga yoziladi",
+        ];
+        const SEED_ACCS = [
+          {
+            id: "acc1",
+            name: "FTMO Challenge",
+            broker: "FTMO",
+            number: "1520384",
+            capital: 10000,
+            currency: "USD",
+            leverage: "1:100",
+            platform: "MT5",
+            mock: {
+              syms: ["XAUUSD", "EURUSD", "NAS100", "SPX500"],
+              risk: 0.005,
+              wr: 0.55,
+              seed: 11,
+            },
+            link: {
+              on: true,
+              mode: "investor",
+              server: "FTMO-Server3",
+              last: Date.now() - 14 * 60000,
+            },
+          },
+          {
+            id: "acc2",
+            name: "Shaxsiy Gold",
+            broker: "Exness",
+            number: "87410293",
+            capital: 500,
+            currency: "USD",
+            leverage: "1:500",
+            platform: "MT5",
+            mock: { syms: ["XAUUSD"], risk: 0.01, wr: 0.45, seed: 23 },
+            link: {
+              on: true,
+              mode: "investor",
+              server: "Exness-MT5Real8",
+              last: Date.now() - 3 * 3600000,
+            },
+          },
+          {
+            id: "acc3",
+            name: "Scalp / Crypto",
+            broker: "IC Markets",
+            number: "5021776",
+            capital: 2000,
+            currency: "USD",
+            leverage: "1:200",
+            platform: "cTrader",
+            mock: {
+              syms: ["BTCUSD", "XAUUSD", "NAS100", "UKOIL"],
+              risk: 0.0075,
+              wr: 0.5,
+              seed: 37,
+              scalp: true,
+            },
+            link: { on: false },
+          },
+        ];
+        const MOCK = {};
+        function mockTrades(acc) {
+          if (!acc.mock || S.meta.mockOff) return [];
+          const key = acc.id + "|" + acc.capital;
+          if (MOCK[key]) return MOCK[key];
+          const m = acc.mock,
+            r = rngF(m.seed * 977 + Math.round(acc.capital));
+          const out = [];
+          for (let day = T0; day < TEND_FX - H * 20; day += 24 * H) {
+            const wd = new Date(day).getUTCDay();
+            if (wd === 0 || wd === 6) continue;
+            const n = [0, 1, 1, 2, 2, 3, 1][Math.floor(r() * 7)];
+            const used = new Set();
+            for (let k = 0; k < n; k++) {
+              const sym = m.syms[Math.floor(r() * m.syms.length)];
+              const c = SYMS[sym];
+              let hr =
+                r() < 0.5 ? 7 + Math.floor(r() * 4) : 12 + Math.floor(r() * 5);
+              if (used.has(hr)) hr++;
+              used.add(hr);
+              const ot = day + hr * H + Math.floor(r() * 50) * 60000;
+              const b = barAt(sym, ot);
+              if (!b) continue;
+              const entry = b.open + (b.close - b.open) * r() * 0.5;
+              const dir = r() < 0.5 ? 1 : -1;
+              const sld =
+                entry * c.sl * (m.scalp ? 0.5 : 1) * (0.7 + r() * 0.6);
+              const riskUsd = acc.capital * m.risk;
+              let lots = Math.max(
+                0.01,
+                Math.round((riskUsd / (sld * c.cv)) * 100) / 100,
+              );
+              const u = r();
+              let R,
+                tags = [],
+                setup = SETUPS[Math.floor(r() * SETUPS.length)];
+              if (u < 0.08) {
+                R = (r() - 0.5) * 0.08;
+                tags = ["Breakeven"];
+              } else if (u < 0.08 + m.wr) {
+                R = r() < 0.25 ? 0.6 + r() * 0.5 : 1.4 + r() * 1.8;
+                if (R < 1.2 && r() < 0.6) tags.push("Erta yopildi");
+              } else {
+                R = -(0.65 + r() * 0.35);
+                if (r() < 0.5) tags.push(MIST[Math.floor(r() * MIST.length)]);
+                if (m.wr < 0.5 && r() < 0.18) {
+                  R = -1.6;
+                  tags = ["SL siljitildi"];
+                }
+              }
+              const exit = entry + dir * R * sld;
+              const tp = entry + dir * (2 + Math.round(r()) * 0.5) * sld;
+              const sl = entry - dir * sld;
+              const hold = m.scalp ? 3 + r() * 40 : 12 + r() * 300;
+              const ct = ot + hold * 60000;
+              const pnl =
+                Math.round(lots * c.cv * (exit - entry) * dir * 100) / 100;
+              out.push({
+                id: acc.id + "-" + out.length,
+                acc: acc.id,
+                sym,
+                dir,
+                lots,
+                entry,
+                exit,
+                sl,
+                tp,
+                ot,
+                ct,
+                pnl,
+                R: Math.round((pnl / riskUsd) * 100) / 100,
+                setup,
+                tags,
+                src: "mt",
+              });
+            }
+          }
+          MOCK[key] = out;
+          return out;
+        }
+        function openPositions(acc) {
+          if (!acc.mock || S.meta.mockOff) return [];
+          const res = [];
+          const add = (sym, dir, lotsMul, id) => {
+            const c = SYMS[sym];
+            const lp = lastPrice(sym);
+            const sld = lp * c.sl;
+            const entry = lp * (1 - dir * 0.0015);
+            const lots = Math.max(
+              0.01,
+              Math.round(
+                ((acc.capital * acc.mock.risk) / (sld * c.cv)) * 100 * lotsMul,
+              ) / 100,
+            );
+            res.push({
+              id: acc.id + "-o" + id,
+              acc: acc.id,
+              sym,
+              dir,
+              lots,
+              entry,
+              sl: entry - dir * sld,
+              tp: entry + dir * 2 * sld,
+              ot: Date.UTC(2026, 9, 16, 13, 20) - id * 7 * H,
+              price: lp,
+              pnl: Math.round(lots * c.cv * (lp - entry) * dir * 100) / 100,
+              open: true,
+            });
+          };
+          if (acc.id === "acc1") {
+            add("XAUUSD", 1, 1, 1);
+            add("EURUSD", -1, 1, 2);
+          }
+          if (acc.id === "acc2") add("XAUUSD", 1, 1, 1);
+          if (acc.id === "acc3") add("BTCUSD", -1, 1, 1);
+          return res;
+        }
+
+        /* ---------- state & storage ---------- */
+        const LS = "sovereign-journal-v1";
+        const S = {
+          accounts: SEED_ACCS.map((a) => JSON.parse(JSON.stringify(a))),
+          manual: [],
+          journal: {},
+          meta: { read: [] },
+          sel: "acc1",
+          view: "dash",
+          calY: 2026,
+          calM: 9,
+          calSel: null,
+          jDate: "2026-10-16",
+          chartSym: "XAUUSD",
+          chartTrade: null,
+          nImp: { h: true, m: true, l: false },
+          nCur: {},
+          form: null,
+        };
+        (function () {
+          try {
+            const d = JSON.parse(localStorage.getItem(LS) || "null");
+            if (d) {
+              ["accounts", "manual", "journal", "meta"].forEach((k) => {
+                if (d[k]) S[k] = d[k];
+              });
+            }
+            const th = localStorage.getItem(LS + "-theme");
+            if (th) document.documentElement.setAttribute("data-theme", th);
+          } catch (e) {}
+        })();
+        const Store = {
+          db: null,
+          uid: null,
+          assets: null,
+          mode: "local",
+          t: {},
+          local() {
+            try {
+              localStorage.setItem(
+                LS,
+                JSON.stringify({
+                  accounts: S.accounts,
+                  manual: S.manual,
+                  journal: S.journal,
+                  meta: S.meta,
+                }),
+              );
+            } catch (e) {}
+          },
+          ref(k) {
+            return this.db.collection("data/users/" + this.uid).doc(k);
+          },
+          save(k, sub) {
+            this.local();
+            if (!this.db) return;
+            const key = sub ? "j_" + sub : k;
+            clearTimeout(this.t[key]);
+            this.t[key] = setTimeout(() => {
+              const body = sub ? { v: S.journal[sub] || null } : { v: S[k] };
+              this.ref(key)
+                .set(JSON.parse(JSON.stringify(body)))
+                .catch((e) => {
+                  if (e && e.code === "invalid_argument") {
+                    this.db = null;
+                    this.mode = "local";
+                    renderTop();
+                  }
+                });
+            }, 650);
+          },
+          async connect() {
+            if (!window.claude || typeof window.claude.use !== "function")
+              return;
+            try {
+              const [db, user, assets] = await Promise.all([
+                window.claude.use("db"),
+                window.claude.use("user"),
+                window.claude.use("assets").catch(() => null),
+              ]);
+              this.assets = assets || null;
+              if (!db || !user) return;
+              const id = await user.id();
+              if (!id) return;
+              this.db = db;
+              this.uid = id;
+              const snap = await db.collection("data/users/" + id).get();
+              if (snap.empty) {
+                ["accounts", "manual", "meta"].forEach((k) => this.save(k));
+                Object.keys(S.journal).forEach((d) => this.save("journal", d));
+              } else {
+                const j = {};
+                snap.docs.forEach((d) => {
+                  const v = d.data() && d.data().v;
+                  if (d.id.indexOf("j_") === 0) {
+                    if (v) j[d.id.slice(2)] = v;
+                  } else if (v && ["accounts", "manual", "meta"].includes(d.id))
+                    S[d.id] = v;
+                });
+                S.journal = j;
+                this.local();
+              }
+              this.mode = "cloud";
+              render();
+            } catch (e) {
+              this.db = null;
+            }
+          },
+        };
+
+        const accById = (id) => S.accounts.find((a) => a.id === id);
+        function selAccs() {
+          return S.sel === "all"
+            ? S.accounts
+            : S.accounts.filter((a) => a.id === S.sel);
+        }
+        function allTrades() {
+          const ids = new Set(selAccs().map((a) => a.id));
+          let t = [];
+          selAccs().forEach((a) => {
+            t = t.concat(mockTrades(a));
+          });
+          t = t.concat(S.manual.filter((m) => ids.has(m.acc)));
+          return t.sort((a, b) => a.ct - b.ct);
+        }
+        function allOpen() {
+          let o = [];
+          selAccs().forEach((a) => {
+            o = o.concat(openPositions(a));
+          });
+          return o;
+        }
+        function capital() {
+          return selAccs().reduce((s, a) => s + Number(a.capital || 0), 0);
+        }
+        function curr() {
+          const a = selAccs()[0];
+          return a ? a.currency : "USD";
+        }
+        function stats(tr) {
+          const n = tr.length;
+          let w = 0,
+            l = 0,
+            gw = 0,
+            gl = 0,
+            best = null,
+            worst = null,
+            hold = 0,
+            hn = 0,
+            net = 0;
+          tr.forEach((t) => {
+            net += t.pnl;
+            if (t.pnl > 0) {
+              w++;
+              gw += t.pnl;
+            } else if (t.pnl < 0) {
+              l++;
+              gl += -t.pnl;
+            }
+            if (!best || t.pnl > best.pnl) best = t;
+            if (!worst || t.pnl < worst.pnl) worst = t;
+            if (t.ct && t.ot) {
+              hold += (t.ct - t.ot) / 60000;
+              hn++;
+            }
+          });
+          const aw = w ? gw / w : 0,
+            al = l ? gl / l : 0;
+          return {
+            n,
+            w,
+            l,
+            net,
+            wr: n ? (w / n) * 100 : 0,
+            pf: gl ? gw / gl : gw ? Infinity : 0,
+            rr: al ? aw / al : 0,
+            aw,
+            al,
+            best,
+            worst,
+            hold: hn ? hold / hn : 0,
+            exp: n ? net / n : 0,
+          };
+        }
+        function byDay(tr) {
+          const m = {};
+          tr.forEach((t) => {
+            const k = ymd(new Date(t.ct || t.ot));
+            (m[k] = m[k] || []).push(t);
+          });
+          return m;
+        }
+
+        /* ---------- shell ---------- */
+        const VIEWS = [
+          ["dash", "Dashboard", "dash"],
+          ["cal", "Calendar", "cal"],
+          ["jour", "Journal", "jour"],
+          ["chart", "Charts", "chart"],
+          ["news", "News", "news"],
+          ["chal", "Challenge", "flag"],
+          ["acad", "Academy", "acad"],
+        ];
+        const TITLES = {
+          dash: "Boshqaruv paneli",
+          cal: "Savdo kalendari",
+          jour: "Kunlik jurnal",
+          chart: "Bozor grafiklari",
+          news: "Iqtisodiy kalendar",
+          acad: "Trader akademiyasi",
+          chal: "30 kunlik challenge",
+        };
+        function renderSide() {
+          $("#side").innerHTML =
+            '<div class="brand"><div class="mk">' +
+            ic("crown", 17) +
+            "</div><div><b>Sovereign</b><small>Trading jurnal</small></div></div>" +
+            VIEWS.map(
+              (v) =>
+                '<button class="nav' +
+                (S.view === v[0] ? " on" : "") +
+                '" data-go="' +
+                v[0] +
+                '">' +
+                ic(v[2]) +
+                v[1] +
+                "</button>",
+            ).join("") +
+            '<div class="foot"><button class="nav" data-act="accounts">' +
+            ic("wallet") +
+            "Hisoblar (" +
+            S.accounts.length +
+            '/3)</button><button class="nav" data-act="theme">' +
+            ic("moon") +
+            "Mavzu</button></div>";
+          $("#bnav").innerHTML = VIEWS.map(
+            (v) =>
+              '<button class="' +
+              (S.view === v[0] ? "on" : "") +
+              '" data-go="' +
+              v[0] +
+              '">' +
+              ic(v[2]) +
+              "<span>" +
+              v[1] +
+              "</span></button>",
+          ).join("");
+        }
+        function syncChip() {
+          const a = selAccs();
+          if (S.sel === "all")
+            return '<span class="chip au">' + a.length + " ta hisob</span>";
+          const x = a[0];
+          if (!x) return "";
+          if (x.link && x.link.on) {
+            const m = Math.round((Date.now() - x.link.last) / 60000);
+            return (
+              '<span class="chip g"><span class="dot"></span>Ulangan · ' +
+              (m < 1
+                ? "hozir"
+                : m < 60
+                  ? m + " daq oldin"
+                  : Math.round(m / 60) + " soat oldin") +
+              "</span>"
+            );
+          }
+          return '<span class="chip"><span class="dot"></span>Ulanmagan</span>';
+        }
+        function renderTop() {
+          $("#top").innerHTML =
+            "<h1>" +
+            TITLES[S.view] +
+            "</h1>" +
+            '<select id="accsel" aria-label="Hisob" style="width:auto;max-width:220px">' +
+            S.accounts
+              .map(
+                (a) =>
+                  '<option value="' +
+                  a.id +
+                  '"' +
+                  (S.sel === a.id ? " selected" : "") +
+                  ">" +
+                  esc(a.name) +
+                  "</option>",
+              )
+              .join("") +
+            (S.accounts.length > 1
+              ? '<option value="all"' +
+                (S.sel === "all" ? " selected" : "") +
+                ">Barcha hisoblar</option>"
+              : "") +
+            "</select>" +
+            syncChip() +
+            (S.sel !== "all"
+              ? '<button class="btn sm" data-act="sync" aria-label="Sinxronlash">' +
+                ic("sync") +
+                "<span>Sinxronlash</span></button>"
+              : "") +
+            '<button class="btn sm ghost" data-act="accounts" aria-label="Hisoblar">' +
+            ic("wallet") +
+            "</button>";
+        }
+        let charts = [],
+          timers = [];
+        function cleanup() {
+          charts.forEach((c) => {
+            try {
+              c.remove();
+            } catch (e) {}
+          });
+          charts = [];
+          timers.forEach(clearInterval);
+          timers = [];
+        }
+        function render() {
+          cleanup();
+          renderSide();
+          renderTop();
+          const v = $("#view");
+          v.classList.remove("enter");
+          void v.offsetWidth;
+          v.classList.add("enter");
+          ({
+            dash: vDash,
+            cal: vCal,
+            jour: vJour,
+            chart: vChart,
+            news: vNews,
+            acad: vAcad,
+            chal: vChal,
+          })[S.view](v);
+        }
+        function cssv(n) {
+          return getComputedStyle(document.documentElement)
+            .getPropertyValue(n)
+            .trim();
+        }
+        function mkChart(el, opt) {
+          if (!window.LightweightCharts) {
+            el.innerHTML =
+              '<div class="empty">Grafik kutubxonasi yuklanmadi.</div>';
+            return null;
+          }
+          const ch = LightweightCharts.createChart(
+            el,
+            Object.assign(
+              {
+                autoSize: true,
+                layout: {
+                  background: { type: "solid", color: "transparent" },
+                  textColor: cssv("--tx3"),
+                  fontFamily: "Manrope, system-ui, sans-serif",
+                  fontSize: 11,
+                },
+                grid: {
+                  vertLines: { color: cssv("--line") },
+                  horzLines: { color: cssv("--line") },
+                },
+                rightPriceScale: { borderColor: cssv("--line") },
+                timeScale: { borderColor: cssv("--line"), timeVisible: true },
+                crosshair: { mode: 0 },
+              },
+              opt || {},
+            ),
+          );
+          charts.push(ch);
+          return ch;
+        }
+
+        /* ---------- Dashboard ---------- */
+        function vDash(v) {
+          const tr = allTrades(),
+            st = stats(tr),
+            op = allOpen(),
+            cap = capital(),
+            cur = curr();
+          const bal = cap + st.net,
+            fl = op.reduce((s, p) => s + p.pnl, 0),
+            eq = bal + fl;
+          const lev = (a) =>
+            Number(String(a.leverage || "1:100").split(":")[1]) || 100;
+          const margin = op.reduce((s, p) => {
+            const a = accById(p.acc);
+            return s + (p.lots * SYMS[p.sym].cv * p.price) / lev(a);
+          }, 0);
+          const a0 = selAccs()[0];
+          const tagc = {};
+          tr.forEach((t) =>
+            (t.tags || []).forEach((g) => {
+              if (g !== "Breakeven") tagc[g] = (tagc[g] || 0) + 1;
+            }),
+          );
+          const tags = Object.entries(tagc)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5);
+          const tmax = tags.length ? tags[0][1] : 1;
+          v.innerHTML =
+            (S.meta.mockOff
+              ? ""
+              : '<div class="card" style="margin-bottom:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:12px 16px"><span class="chip au">Namuna</span><span style="flex:1;min-width:200px;font-size:13px;color:var(--tx2)">Hozir namuna savdolar ko‘rsatilmoqda. O‘z ma’lumotlaringiz bilan boshlash uchun ularni yashiring.</span><button class="btn sm pri" data-act="fresh">Toza boshlash</button></div>') +
+            '<section class="hero"><div><div class="lbl">' +
+            (S.sel === "all"
+              ? "Umumiy balans"
+              : esc(a0.name) +
+                " · " +
+                esc(a0.broker) +
+                " · " +
+                esc(a0.platform)) +
+            '</div><div class="big">' +
+            money(bal, cur) +
+            "</div>" +
+            '<div class="lbl" style="margin-top:8px">Boshlang‘ich kapital ' +
+            money(cap, cur) +
+            ' · <span class="' +
+            cls(st.net) +
+            '">' +
+            money(st.net, cur, 1) +
+            " (" +
+            (cap ? ((st.net / cap) * 100).toFixed(1) : "0") +
+            "%)</span></div></div>" +
+            '<div class="sub"><div><span class="lbl">Equity</span><b>' +
+            money(eq, cur) +
+            '</b></div><div><span class="lbl">Suzuvchi P&amp;L</span><b class="' +
+            cls(fl) +
+            '">' +
+            money(fl, cur, 1) +
+            '</b></div><div><span class="lbl">Margin</span><b>' +
+            money(margin, cur) +
+            '</b></div><div><span class="lbl">Bo‘sh margin</span><b>' +
+            money(eq - margin, cur) +
+            "</b></div></div></section>" +
+            '<div class="grid g4" style="margin-bottom:14px">' +
+            kpi(
+              "Sof P&L",
+              money(st.net, cur, 1),
+              cls(st.net),
+              st.n + " ta yopilgan savdo",
+            ) +
+            kpi(
+              "Win rate",
+              st.wr.toFixed(1) + "%",
+              "",
+              st.w + " foyda · " + st.l + " zarar",
+            ) +
+            kpi(
+              "Profit factor",
+              st.pf === Infinity ? "∞" : st.pf.toFixed(2),
+              st.pf >= 1.5 ? "up" : st.pf < 1 ? "dn" : "",
+              "1.5+ — sog‘lom chegara",
+            ) +
+            kpi(
+              "O‘rtacha RRR",
+              "1 : " + st.rr.toFixed(2),
+              "",
+              money(st.aw, cur) + " / " + money(st.al, cur),
+            ) +
+            kpi(
+              "Eng yaxshi savdo",
+              st.best ? money(st.best.pnl, cur, 1) : "—",
+              "up",
+              st.best
+                ? SYMS[st.best.sym].name + " · " + dShort(st.best.ct)
+                : "",
+            ) +
+            kpi(
+              "Eng yomon savdo",
+              st.worst ? money(st.worst.pnl, cur, 1) : "—",
+              "dn",
+              st.worst
+                ? SYMS[st.worst.sym].name + " · " + dShort(st.worst.ct)
+                : "",
+            ) +
+            kpi(
+              "O‘rtacha ushlash",
+              dur(st.hold),
+              "",
+              "Pozitsiya ochiq turgan vaqt",
+            ) +
+            kpi(
+              "Kutilma (expectancy)",
+              money(st.exp, cur, 1),
+              cls(st.exp),
+              "Bir savdoga o‘rtacha natija",
+            ) +
+            "</div>" +
+            lotCalcHtml(bal) +
+            '<div class="grid g32" style="margin-bottom:14px"><div class="card"><h3>Equity egri chizig‘i<span class="sp"></span><span class="chip">kunlik</span></h3><div class="chartbox" id="eq"></div></div>' +
+            '<div class="card"><h3>Eng ko‘p takrorlangan xatolar</h3>' +
+            (tags.length
+              ? '<div class="bars">' +
+                tags
+                  .map(
+                    (t) =>
+                      '<div class="row"><span>' +
+                      esc(t[0]) +
+                      '</span><div class="tr"><i style="width:' +
+                      (t[1] / tmax) * 100 +
+                      '%"></i></div><span class="mut">' +
+                      t[1] +
+                      "</span></div>",
+                  )
+                  .join("") +
+                "</div>"
+              : '<div class="empty">Xato teglari hali yo‘q.</div>') +
+            '<p class="mut" style="font-size:12px;margin:12px 0 0">Har hafta eng yuqoridagi xatoni bitta qoida bilan yoping.</p></div></div>' +
+            '<div class="grid g2"><div class="card"><h3>Ochiq pozitsiyalar<span class="sp"></span><span class="chip">' +
+            op.length +
+            "</span></h3>" +
+            posTable(op, cur) +
+            "</div>" +
+            '<div class="card"><h3>So‘nggi savdolar<span class="sp"></span><button class="btn sm" data-go="cal">Kalendar</button></h3>' +
+            tradeTable(tr.slice(-8).reverse(), cur, true) +
+            "</div></div>";
+          const el = $("#eq");
+          const ch = mkChart(el, {
+            timeScale: { borderColor: cssv("--line"), timeVisible: false },
+          });
+          if (ch) {
+            const s = ch.addAreaSeries({
+              lineColor: cssv("--gold"),
+              topColor: cssv("--goldsoft"),
+              bottomColor: "rgba(0,0,0,0)",
+              lineWidth: 2,
+              priceLineVisible: false,
+            });
+            const days = byDay(tr);
+            let run = cap;
+            const pts = Object.keys(days)
+              .sort()
+              .map((k) => {
+                run += days[k].reduce((a, t) => a + t.pnl, 0);
+                return { time: k, value: Math.round(run * 100) / 100 };
+              });
+            if (pts.length) {
+              s.setData(pts);
+              ch.timeScale().fitContent();
+            } else
+              el.innerHTML =
+                '<div class="empty">Hali savdolar yo‘q. Jurnalda birinchi savdoni qo‘shing.</div>';
+          }
+        }
+        function lotCalcHtml(bal) {
+          const L =
+            S.lc ||
+            (S.lc = { sym: "XAUUSD", bal: "", risk: "1", entry: "", sl: "" });
+          if (L.bal === "")
+            L.bal = String(Math.max(0, Math.round(bal * 100) / 100));
+          if (L.entry === "") {
+            const c = SYMS[L.sym];
+            const lp = lastPrice(L.sym);
+            L.entry = lp.toFixed(c.dp);
+            L.sl = (lp - lp * c.sl).toFixed(c.dp);
+          }
+          return (
+            '<div class="card" style="margin-bottom:14px"><h3>' +
+            ic("calc", 15) +
+            'Lot kalkulyatori<span class="sp"></span><span class="chip">1R / 2R / 3R</span></h3>' +
+            '<div class="fgrid" style="grid-template-columns:repeat(5,minmax(0,1fr))"><div><label class="f">Aktiv</label><select data-lc="sym">' +
+            Object.keys(SYMS)
+              .map(
+                (k) =>
+                  '<option value="' +
+                  k +
+                  '"' +
+                  (L.sym === k ? " selected" : "") +
+                  ">" +
+                  SYMS[k].name +
+                  "</option>",
+              )
+              .join("") +
+            "</select></div>" +
+            lcIn("bal", "Balans", L.bal) +
+            lcIn("risk", "Risk %", L.risk) +
+            lcIn("entry", "Kirish narxi", L.entry) +
+            lcIn("sl", "Stop Loss narxi", L.sl) +
+            '</div><div id="lcout" style="margin-top:14px">' +
+            lotCalcOut() +
+            "</div></div>"
+          );
+        }
+        function lcIn(k, l, v) {
+          return (
+            '<div><label class="f">' +
+            l +
+            '</label><input type="number" step="any" inputmode="decimal" data-lc="' +
+            k +
+            '" value="' +
+            esc(v) +
+            '"></div>'
+          );
+        }
+        function lotCalcOut() {
+          const L = S.lc,
+            c = SYMS[L.sym];
+          const bal = Number(L.bal),
+            rk = Number(L.risk),
+            en = Number(L.entry),
+            sl = Number(L.sl);
+          if (!(bal > 0) || !(rk > 0) || !(en > 0) || !(sl > 0) || en === sl)
+            return '<div class="mut" style="font-size:13px">Balans, risk, kirish va SL narxini kiriting (SL kirishdan farqli bo‘lsin).</div>';
+          const dir = sl < en ? 1 : -1,
+            d = Math.abs(en - sl),
+            riskUsd = (bal * rk) / 100;
+          const raw = riskUsd / (d * c.cv);
+          const lot = Math.floor(raw * 100) / 100;
+          const useLot = Math.max(0.01, lot);
+          const realRisk = useLot * c.cv * d,
+            realPct = (realRisk / bal) * 100;
+          const tgt = (n) => (en + dir * n * d).toFixed(c.dp);
+          const warn =
+            lot < 0.01
+              ? '<div class="dn" style="font-size:13px;margin-top:10px">Minimal lot 0.01 ham rejadagi riskdan katta: haqiqiy risk ' +
+                money(realRisk) +
+                " (" +
+                realPct.toFixed(1) +
+                "%). SL’ni qisqartiring yoki cent akkauntdan foydalaning.</div>"
+              : realPct > 2
+                ? '<div class="dn" style="font-size:13px;margin-top:10px">Risk 2% dan yuqori — tavsiya etilmaydi.</div>'
+                : "";
+          return (
+            '<div class="grid g4">' +
+            kpi(
+              "Lot hajmi",
+              useLot.toFixed(2),
+              lot < 0.01 ? "dn" : "gold",
+              (dir > 0 ? "Long (Buy)" : "Short (Sell)") +
+                " · hisob: " +
+                raw.toFixed(3),
+            ) +
+            kpi(
+              "Risk summasi",
+              money(realRisk),
+              "",
+              realPct.toFixed(2) + "% balansdan",
+            ) +
+            kpi(
+              "SL masofasi",
+              d.toFixed(c.dp),
+              "",
+              SYMS[L.sym].name + " narx birligida",
+            ) +
+            kpi(
+              "Maqsadlar",
+              "1R " + tgt(1),
+              "up",
+              "2R " + tgt(2) + " · 3R " + tgt(3),
+            ) +
+            "</div>" +
+            warn
+          );
+        }
+        function kpi(l, v, c, s) {
+          return (
+            '<div class="card kpi"><div class="l">' +
+            l +
+            '</div><div class="v ' +
+            (c || "") +
+            '">' +
+            v +
+            '</div><div class="s">' +
+            s +
+            "</div></div>"
+          );
+        }
+        function posTable(op, cur) {
+          if (!op.length)
+            return '<div class="empty">Ochiq pozitsiya yo‘q.</div>';
+          return (
+            '<div class="tw"><table><tr><th>Aktiv</th><th>Yo‘nalish</th><th class="r">Lot</th><th class="r">Kirish</th><th class="r">SL / TP</th><th class="r">P&amp;L</th></tr>' +
+            op
+              .map(
+                (p) =>
+                  '<tr class="trow" data-chart="' +
+                  p.sym +
+                  "|" +
+                  p.id +
+                  '"><td><b>' +
+                  SYMS[p.sym].name +
+                  '</b></td><td><span class="side-l ' +
+                  (p.dir > 0 ? "b" : "s") +
+                  '">' +
+                  (p.dir > 0 ? "BUY" : "SELL") +
+                  '</span></td><td class="r">' +
+                  p.lots.toFixed(2) +
+                  '</td><td class="r">' +
+                  fmtP(p.entry, p.sym) +
+                  '</td><td class="r mut">' +
+                  fmtP(p.sl, p.sym) +
+                  " / " +
+                  fmtP(p.tp, p.sym) +
+                  '</td><td class="r ' +
+                  cls(p.pnl) +
+                  '">' +
+                  money(p.pnl, cur, 1) +
+                  "</td></tr>",
+              )
+              .join("") +
+            "</table></div>"
+          );
+        }
+        function tradeTable(tr, cur, withDate, del) {
+          if (!tr.length) return '<div class="empty">Savdo yo‘q.</div>';
+          return (
+            '<div class="tw"><table><tr>' +
+            (withDate ? "<th>Sana</th>" : "<th>Vaqt</th>") +
+            '<th>Aktiv</th><th></th><th class="r">Lot</th><th class="r">Kirish → Chiqish</th><th class="r">R</th><th class="r">P&amp;L</th>' +
+            (del ? "<th></th>" : "") +
+            "</tr>" +
+            tr
+              .map(
+                (t) =>
+                  '<tr class="trow" data-chart="' +
+                  t.sym +
+                  "|" +
+                  t.id +
+                  '"><td class="mut">' +
+                  (withDate ? dShort(t.ct) : hm(t.ot) + "–" + hm(t.ct)) +
+                  "</td><td><b>" +
+                  SYMS[t.sym].name +
+                  "</b><div>" +
+                  [t.setup]
+                    .concat(t.tags || [])
+                    .filter(Boolean)
+                    .map(
+                      (g) =>
+                        '<span class="tag' +
+                        (MIST.includes(g) ? " x" : "") +
+                        '">' +
+                        esc(g) +
+                        "</span>",
+                    )
+                    .join("") +
+                  '</div></td><td><span class="side-l ' +
+                  (t.dir > 0 ? "b" : "s") +
+                  '">' +
+                  (t.dir > 0 ? "BUY" : "SELL") +
+                  '</span></td><td class="r">' +
+                  Number(t.lots).toFixed(2) +
+                  '</td><td class="r">' +
+                  fmtP(t.entry, t.sym) +
+                  " → " +
+                  fmtP(t.exit, t.sym) +
+                  '</td><td class="r ' +
+                  cls(t.pnl) +
+                  '">' +
+                  (t.R != null
+                    ? (t.R > 0 ? "+" : "") + Number(t.R).toFixed(2) + "R"
+                    : "—") +
+                  '</td><td class="r ' +
+                  cls(t.pnl) +
+                  '"><b>' +
+                  money(t.pnl, cur, 1) +
+                  "</b></td>" +
+                  (del
+                    ? '<td class="r">' +
+                      (t.src === "manual"
+                        ? '<button class="btn sm ghost" data-del="' +
+                          t.id +
+                          '" aria-label="O‘chirish">' +
+                          ic("trash") +
+                          "</button>"
+                        : '<span class="chip" title="Broker sinxronizatsiyasi">MT</span>') +
+                      "</td>"
+                    : "") +
+                  "</tr>",
+              )
+              .join("") +
+            "</table></div>"
+          );
+        }
+
+        /* ---------- Calendar ---------- */
+        function vCal(v) {
+          const tr = allTrades(),
+            days = byDay(tr),
+            cur = curr();
+          const y = S.calY,
+            m = S.calM;
+          const first = new Date(y, m, 1),
+            start = new Date(y, m, 1 - ((first.getDay() + 6) % 7));
+          const mt = tr.filter((t) => {
+            const d = new Date(t.ct);
+            return d.getFullYear() === y && d.getMonth() === m;
+          });
+          const ms = stats(mt);
+          const mdays = Object.keys(days).filter((k) => {
+            const d = parseYmd(k);
+            return d.getFullYear() === y && d.getMonth() === m;
+          });
+          const dp = mdays.map((k) => [
+            k,
+            days[k].reduce((a, t) => a + t.pnl, 0),
+          ]);
+          const gd = dp.filter((x) => x[1] > 0).length,
+            rd = dp.filter((x) => x[1] < 0).length;
+          const bestD = dp.sort((a, b) => b[1] - a[1])[0];
+          let h =
+            '<div class="calhead"><button class="btn sm" data-cal="-1" aria-label="Oldingi oy">' +
+            ic("cl") +
+            "</button><h2>" +
+            MON[m] +
+            " " +
+            y +
+            '</h2><button class="btn sm" data-cal="1" aria-label="Keyingi oy">' +
+            ic("cr") +
+            "</button></div>" +
+            '<div class="grid g4" style="margin-bottom:14px">' +
+            kpi(
+              "Oylik P&L",
+              money(ms.net, cur, 1),
+              cls(ms.net),
+              ms.n + " ta savdo",
+            ) +
+            kpi(
+              "Win rate",
+              ms.wr.toFixed(1) + "%",
+              "",
+              "PF " + (ms.pf === Infinity ? "∞" : ms.pf.toFixed(2)),
+            ) +
+            kpi(
+              "Yashil / qizil kunlar",
+              gd + " / " + rd,
+              "",
+              mdays.length + " ta savdo kuni",
+            ) +
+            kpi(
+              "Eng yaxshi kun",
+              bestD ? money(bestD[1], cur, 1) : "—",
+              "up",
+              bestD ? parseYmd(bestD[0]).getDate() + " " + MON[m] : "",
+            ) +
+            "</div>" +
+            '<div class="cal">' +
+            WD.map((d) => '<div class="wd">' + d + "</div>").join("") +
+            '<div class="wd">Hafta</div>';
+          const d = new Date(start);
+          for (let w = 0; w < 6; w++) {
+            let ws = 0,
+              wn = 0,
+              wdays = 0;
+            for (let i = 0; i < 7; i++) {
+              const k = ymd(d);
+              const list = days[k] || [];
+              const p = list.reduce((a, t) => a + t.pnl, 0);
+              const inM = d.getMonth() === m;
+              if (inM) {
+                ws += p;
+                wn += list.length;
+                if (list.length) wdays++;
+              }
+              const c = list.length
+                ? p > 0.005
+                  ? "win"
+                  : p < -0.005
+                    ? "loss"
+                    : "flat"
+                : "";
+              h +=
+                '<button class="cell ' +
+                c +
+                (inM ? "" : " out") +
+                (S.calSel === k ? " sel" : "") +
+                (S.journal[k] ? " jr" : "") +
+                '" data-day="' +
+                k +
+                '"><span class="d">' +
+                d.getDate() +
+                "</span>" +
+                (list.length
+                  ? '<span class="p">' +
+                    compact(p) +
+                    '</span><span class="n">' +
+                    list.length +
+                    " savdo</span>"
+                  : "") +
+                "</button>";
+              d.setDate(d.getDate() + 1);
+            }
+            h +=
+              '<div class="wk"><span>' +
+              (w + 1) +
+              '-hafta</span><b class="' +
+              cls(ws) +
+              '">' +
+              (wn ? compact(ws) : "—") +
+              "</b><span>" +
+              wn +
+              " savdo · " +
+              wdays +
+              " kun</span></div>";
+            if (d.getMonth() !== m && w >= 3) break;
+          }
+          h +=
+            '</div><p class="mut" style="font-size:12px;margin:10px 0 0">Oltin nuqta — shu kun uchun jurnal yozilgan. Kunni bosing — to‘liq tafsilot ochiladi.</p><div id="daypanel" class="daypanel"></div>';
+          v.innerHTML = h;
+          if (S.calSel) dayPanel();
+        }
+        function dayPanel() {
+          const k = S.calSel,
+            el = $("#daypanel");
+          if (!el) return;
+          const list = (byDay(allTrades())[k] || [])
+            .slice()
+            .sort((a, b) => a.ot - b.ot);
+          const st = stats(list),
+            cur = curr(),
+            j = S.journal[k];
+          const d = parseYmd(k);
+          el.innerHTML =
+            '<div class="card enter"><h3>' +
+            WDL[d.getDay()] +
+            ", " +
+            d.getDate() +
+            " " +
+            MON[d.getMonth()] +
+            '<span class="sp"></span><span class="' +
+            cls(st.net) +
+            '" style="font-size:15px">' +
+            money(st.net, cur, 1) +
+            "</span></h3>" +
+            '<div class="grid g4" style="margin-bottom:12px">' +
+            kpi("Savdolar", st.n, "", st.w + " foyda · " + st.l + " zarar") +
+            kpi("Win rate", st.wr.toFixed(0) + "%", "", "") +
+            kpi(
+              "Ruhiy holat",
+              j && j.mental ? j.mental + "/10" : "—",
+              "",
+              j && j.bias ? "Bias: " + esc(j.bias) : "Jurnal yozilmagan",
+            ) +
+            kpi(
+              "Qoidalar",
+              j && j.rules
+                ? Object.values(j.rules).filter(Boolean).length +
+                    "/" +
+                    RULES.length
+                : "—",
+              "",
+              "bajarildi",
+            ) +
+            "</div>" +
+            tradeTable(list, cur, false) +
+            (j && j.post
+              ? '<div class="prose" style="font-size:14px;margin-top:12px"><div class="note">' +
+                esc(j.post) +
+                "</div></div>"
+              : "") +
+            '<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn pri" data-openj="' +
+            k +
+            '">' +
+            ic("edit") +
+            "Jurnalni ochish</button></div></div>";
+          el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+
+        /* ---------- Journal ---------- */
+        function jEntry(k) {
+          return (
+            S.journal[k] || {
+              mental: 0,
+              bias: "",
+              biasNote: "",
+              rules: {},
+              post: "",
+              shots: {},
+            }
+          );
+        }
+        function vJour(v) {
+          const k = S.jDate,
+            j = jEntry(k),
+            cur = curr();
+          const list = (byDay(allTrades())[k] || [])
+            .slice()
+            .sort((a, b) => a.ot - b.ot);
+          const st = stats(list);
+          const f =
+            S.form ||
+            (S.form = {
+              sym: "XAUUSD",
+              dir: 1,
+              lots: "0.01",
+              entry: "",
+              exit: "",
+              sl: "",
+              tp: "",
+              pnl: "",
+              tags: [],
+              setup: "",
+            });
+          const d = parseYmd(k);
+          const accs = selAccs();
+          v.innerHTML =
+            '<div class="calhead"><button class="btn sm" data-jd="-1" aria-label="Oldingi kun">' +
+            ic("cl") +
+            "</button><h2>" +
+            d.getDate() +
+            " " +
+            MON[d.getMonth()] +
+            '</h2><button class="btn sm" data-jd="1" aria-label="Keyingi kun">' +
+            ic("cr") +
+            "</button>" +
+            '<input type="date" id="jdate" value="' +
+            k +
+            '" style="width:auto"><span class="mut">' +
+            WDL[d.getDay()] +
+            '</span><span class="sp" style="flex:1"></span><span class="saved" id="saved">' +
+            (S.journal[k] ? "Saqlangan" : "Yangi yozuv") +
+            "</span></div>" +
+            '<div class="grid g2" style="margin-bottom:14px"><div class="card"><h3>Bozor ochilishidan oldin</h3>' +
+            '<label class="f">Ruhiy holat (1–10)</label><div class="score" id="score">' +
+            Array.from(
+              { length: 10 },
+              (_, i) =>
+                '<button data-score="' +
+                (i + 1) +
+                '" class="' +
+                (j.mental === i + 1 ? "on" : "") +
+                '">' +
+                (i + 1) +
+                "</button>",
+            ).join("") +
+            "</div>" +
+            '<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:10px;margin-top:14px"><div><label class="f" for="bias">Bozor bias</label><select id="bias">' +
+            ["", "Bullish", "Bearish", "Neytral"]
+              .map(
+                (b) =>
+                  "<option" +
+                  (j.bias === b ? " selected" : "") +
+                  ' value="' +
+                  b +
+                  '">' +
+                  (b || "Tanlang") +
+                  "</option>",
+              )
+              .join("") +
+            "</select></div>" +
+            '<div><label class="f" for="biasNote">Asosiy darajalar / reja</label><input type="text" id="biasNote" value="' +
+            esc(j.biasNote) +
+            '" placeholder="H4 OB 4062–4068, Londonda sweep kutaman"></div></div></div>' +
+            '<div class="card"><h3>Qoidalar tekshiruvi<span class="sp"></span><span class="chip au">' +
+            Object.values(j.rules || {}).filter(Boolean).length +
+            "/" +
+            RULES.length +
+            '</span></h3><div class="rules">' +
+            RULES.map(
+              (r, i) =>
+                '<label><input type="checkbox" data-rule="' +
+                i +
+                '"' +
+                (j.rules && j.rules[i] ? " checked" : "") +
+                ">" +
+                r +
+                "</label>",
+            ).join("") +
+            "</div></div></div>" +
+            '<div class="card" style="margin-bottom:14px"><h3>Savdolar logi<span class="sp"></span><span class="' +
+            cls(st.net) +
+            '">' +
+            money(st.net, cur, 1) +
+            "</span></h3>" +
+            tradeTable(list, cur, false, true) +
+            '<div style="border-top:1px solid var(--line);margin-top:12px;padding-top:14px"><div style="font-weight:600;font-size:13px;margin-bottom:10px">Savdo qo‘shish' +
+            (accs.length > 1
+              ? ' · <select id="facc" style="width:auto;display:inline-block;padding:3px 6px">' +
+                accs
+                  .map(
+                    (a) =>
+                      '<option value="' +
+                      a.id +
+                      '">' +
+                      esc(a.name) +
+                      "</option>",
+                  )
+                  .join("") +
+                "</select>"
+              : "") +
+            "</div>" +
+            '<div class="fgrid"><div><label class="f">Aktiv</label><select data-f="sym">' +
+            Object.keys(SYMS)
+              .map(
+                (s) =>
+                  '<option value="' +
+                  s +
+                  '"' +
+                  (f.sym === s ? " selected" : "") +
+                  ">" +
+                  SYMS[s].name +
+                  "</option>",
+              )
+              .join("") +
+            "</select></div>" +
+            '<div><label class="f">Yo‘nalish</label><select data-f="dir"><option value="1"' +
+            (f.dir == 1 ? " selected" : "") +
+            '>Long (Buy)</option><option value="-1"' +
+            (f.dir == -1 ? " selected" : "") +
+            ">Short (Sell)</option></select></div>" +
+            fin("lots", "Lot", f.lots) +
+            fin("entry", "Kirish narxi", f.entry) +
+            fin("exit", "Chiqish narxi", f.exit) +
+            fin("sl", "Stop Loss", f.sl) +
+            fin("tp", "Take Profit", f.tp) +
+            fin("pnl", "P&L (bo‘sh — avto)", f.pnl) +
+            "</div>" +
+            '<label class="f" style="margin-top:12px">Setup</label><div class="tagpick" id="fsetup">' +
+            SETUPS.map(
+              (s) =>
+                '<button data-setup="' +
+                s +
+                '" class="' +
+                (f.setup === s ? "on" : "") +
+                '">' +
+                s +
+                "</button>",
+            ).join("") +
+            "</div>" +
+            '<label class="f" style="margin-top:12px">Xato / saboq teglari</label><div class="tagpick">' +
+            MIST.concat(["Rejaga to‘liq amal", "Sabr qildim"])
+              .map(
+                (s) =>
+                  '<button data-ftag="' +
+                  s +
+                  '" class="' +
+                  (f.tags.includes(s)
+                    ? "on" + (MIST.includes(s) ? " x" : "")
+                    : "") +
+                  '">' +
+                  s +
+                  "</button>",
+              )
+              .join("") +
+            "</div>" +
+            '<div style="display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap"><button class="btn pri" data-act="addtrade">' +
+            ic("plus") +
+            'Savdoni saqlash</button><span class="mut" id="ferr" style="font-size:12px"></span></div></div></div>' +
+            '<div class="card" style="margin-bottom:14px"><h3>Grafik skrinshotlari</h3><div class="shots">' +
+            shot("before", "Kirishdan oldin", j) +
+            shot("after", "Natijadan keyin", j) +
+            "</div></div>" +
+            '<div class="card"><h3>Bozor yopilgandan keyin — hissiy refleksiya</h3><textarea id="post" placeholder="Bugun nimani to‘g‘ri qildim? Qaysi lahzada hissiyot qaror qildi? Ertaga nimani o‘zgartiraman?">' +
+            esc(j.post) +
+            "</textarea></div>";
+        }
+        function fin(k, l, v) {
+          return (
+            '<div><label class="f">' +
+            l +
+            '</label><input type="number" step="any" inputmode="decimal" data-f="' +
+            k +
+            '" value="' +
+            esc(v) +
+            '"></div>'
+          );
+        }
+        function shot(k, l, j) {
+          const u = j.shots && j.shots[k];
+          return (
+            '<label class="shot">' +
+            (u
+              ? '<img src="' +
+                esc(u) +
+                '" alt="' +
+                l +
+                ' skrinshoti"><button class="btn sm rm" data-rmshot="' +
+                k +
+                '">' +
+                ic("x") +
+                "O‘chirish</button>"
+              : ic("up", 22) +
+                "<span>" +
+                l +
+                "</span><span>Rasm yuklash</span>") +
+            '<input type="file" accept="image/*" data-shot="' +
+            k +
+            '"></label>'
+          );
+        }
+        function jSave() {
+          const k = S.jDate;
+          S.journal[k] = Object.assign(jEntry(k), S.journal[k] || {});
+          Store.save("journal", k);
+          const s = $("#saved");
+          if (s) {
+            s.textContent = "Saqlanmoqda…";
+            clearTimeout(jSave.t);
+            jSave.t = setTimeout(() => {
+              if ($("#saved"))
+                $("#saved").textContent = "Saqlandi " + hm(Date.now());
+            }, 700);
+          }
+        }
+        function jSet(fn) {
+          const k = S.jDate;
+          const e = JSON.parse(JSON.stringify(jEntry(k)));
+          fn(e);
+          S.journal[k] = e;
+          jSave();
+        }
+        function addTrade() {
+          const f = S.form,
+            e = $("#ferr");
+          const n = (x) => (x === "" || x == null ? NaN : Number(x));
+          const entry = n(f.entry),
+            exit = n(f.exit),
+            lots = n(f.lots);
+          if (!(lots > 0) || isNaN(entry) || isNaN(exit)) {
+            e.textContent = "Lot, kirish va chiqish narxini kiriting.";
+            e.className = "dn";
+            return;
+          }
+          const c = SYMS[f.sym],
+            dir = Number(f.dir);
+          let pnl = n(f.pnl);
+          if (isNaN(pnl))
+            pnl = Math.round(lots * c.cv * (exit - entry) * dir * 100) / 100;
+          const sl = n(f.sl),
+            tp = n(f.tp);
+          const R =
+            !isNaN(sl) && sl !== entry
+              ? Math.round(
+                  (((exit - entry) * dir) / Math.abs(entry - sl)) * 100,
+                ) / 100
+              : null;
+          const accSel = $("#facc");
+          const acc = accSel
+            ? accSel.value
+            : S.sel === "all"
+              ? S.accounts[0].id
+              : S.sel;
+          const base = parseYmd(S.jDate);
+          base.setHours(12, 0, 0, 0);
+          S.manual.push({
+            id: "m-" + uid(),
+            acc,
+            sym: f.sym,
+            dir,
+            lots,
+            entry,
+            exit,
+            sl: isNaN(sl) ? null : sl,
+            tp: isNaN(tp) ? null : tp,
+            ot: base.getTime(),
+            ct: base.getTime() + 30 * 60000,
+            pnl,
+            R,
+            setup: f.setup,
+            tags: f.tags.slice(),
+            src: "manual",
+          });
+          Store.save("manual");
+          S.form = null;
+          toast("Savdo saqlandi");
+          render();
+        }
+        function readImage(file) {
+          return new Promise((res, rej) => {
+            const fr = new FileReader();
+            fr.onload = () => {
+              const img = new Image();
+              img.onload = () => {
+                const sc = Math.min(1, 1100 / img.width);
+                const cv = document.createElement("canvas");
+                cv.width = Math.round(img.width * sc);
+                cv.height = Math.round(img.height * sc);
+                cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+                res(cv);
+              };
+              img.onerror = rej;
+              img.src = fr.result;
+            };
+            fr.onerror = rej;
+            fr.readAsDataURL(file);
+          });
+        }
+        async function onShot(k, file) {
+          if (!file) return;
+          toast("Rasm yuklanmoqda…");
+          try {
+            const cv = await readImage(file);
+            let url;
+            if (Store.assets) {
+              const blob = await new Promise((r) =>
+                cv.toBlob(r, "image/jpeg", 0.85),
+              );
+              const up = await Store.assets.upload(blob);
+              url = up.url;
+            } else url = cv.toDataURL("image/jpeg", 0.62);
+            jSet((e) => {
+              e.shots = e.shots || {};
+              e.shots[k] = url;
+            });
+            render();
+          } catch (err) {
+            toast("Rasmni yuklab bo‘lmadi");
+          }
+        }
+
+        /* ---------- Charts ---------- */
+        function vChart(v) {
+          const sym = S.chartSym,
+            c = SYMS[sym],
+            s = series(sym),
+            cur = curr();
+          const tr = allTrades()
+              .filter((t) => t.sym === sym)
+              .slice(-12)
+              .reverse(),
+            op = allOpen().filter((p) => p.sym === sym);
+          const last = s.bars[s.bars.length - 1],
+            prev = s.bars[Math.max(0, s.bars.length - 25)];
+          const chg = ((last.close - prev.close) / prev.close) * 100;
+          v.innerHTML =
+            '<div class="pills">' +
+            Object.keys(SYMS)
+              .map(
+                (k) =>
+                  '<button class="pill' +
+                  (k === sym ? " on" : "") +
+                  '" data-sym="' +
+                  k +
+                  '">' +
+                  SYMS[k].name +
+                  "<small>" +
+                  SYMS[k].cls +
+                  "</small></button>",
+              )
+              .join("") +
+            "</div>" +
+            '<div class="grid g32"><div class="card"><div class="lv"><b id="lp">' +
+            fmtP(last.close, sym) +
+            '</b><span id="lchg" class="' +
+            cls(chg) +
+            '">' +
+            (chg > 0 ? "+" : "") +
+            chg.toFixed(2) +
+            '% · 24 soat</span><span class="sp" style="flex:1"></span><span class="chip au"><span class="dot pulse"></span>Simulyatsiya · H1</span></div>' +
+            '<div class="bigchart" id="bc"></div><div class="legend"><span><i style="background:var(--gold)"></i>Kirish</span><span><i style="background:var(--loss)"></i>Stop Loss</span><span><i style="background:var(--gain)"></i>Take Profit</span><span class="mut">Faqat kuzatuv rejimi — savdo ochilmaydi</span></div></div>' +
+            '<div class="card"><h3>Shu aktivdagi pozitsiyalar</h3>' +
+            (op.length || tr.length
+              ? '<div class="tw"><table><tr><th>Holat</th><th></th><th class="r">Kirish</th><th class="r">P&amp;L</th></tr>' +
+                op
+                  .concat(tr)
+                  .map(
+                    (t) =>
+                      '<tr class="trow' +
+                      (S.chartTrade === t.id ? " on" : "") +
+                      '" data-pick="' +
+                      t.id +
+                      '"><td>' +
+                      (t.open
+                        ? '<span class="chip g">Ochiq</span>'
+                        : '<span class="mut">' + dShort(t.ct) + "</span>") +
+                      '</td><td><span class="side-l ' +
+                      (t.dir > 0 ? "b" : "s") +
+                      '">' +
+                      (t.dir > 0 ? "BUY" : "SELL") +
+                      '</span></td><td class="r">' +
+                      fmtP(t.entry, sym) +
+                      '</td><td class="r ' +
+                      cls(t.pnl) +
+                      '">' +
+                      money(t.pnl, cur, 1) +
+                      "</td></tr>",
+                  )
+                  .join("") +
+                "</table></div>"
+              : '<div class="empty">Bu aktivda tanlangan hisob bo‘yicha savdo yo‘q.</div>') +
+            '<p class="mut" style="font-size:12px;margin:12px 0 0">Qatorni bosing — grafikda Entry, SL va TP chiziqlari ko‘rsatiladi.</p></div></div>';
+          const ch = mkChart($("#bc"));
+          if (!ch) return;
+          const cs = ch.addCandlestickSeries({
+            upColor: cssv("--gain"),
+            downColor: cssv("--loss"),
+            borderVisible: false,
+            wickUpColor: cssv("--gain"),
+            wickDownColor: cssv("--loss"),
+            priceFormat: {
+              type: "price",
+              precision: c.dp,
+              minMove: Math.pow(10, -c.dp),
+            },
+          });
+          const data = s.bars.map((b) => ({
+            time: b.time,
+            open: b.open,
+            high: b.high,
+            low: b.low,
+            close: b.close,
+          }));
+          cs.setData(data);
+          let pick =
+            op.concat(tr).find((t) => t.id === S.chartTrade) || op[0] || null;
+          if (pick) {
+            S.chartTrade = pick.id;
+            cs.createPriceLine({
+              price: pick.entry,
+              color: cssv("--gold"),
+              lineWidth: 2,
+              lineStyle: 0,
+              axisLabelVisible: true,
+              title: "Entry",
+            });
+            if (pick.sl != null)
+              cs.createPriceLine({
+                price: pick.sl,
+                color: cssv("--loss"),
+                lineWidth: 1,
+                lineStyle: 2,
+                axisLabelVisible: true,
+                title: "SL",
+              });
+            if (pick.tp != null)
+              cs.createPriceLine({
+                price: pick.tp,
+                color: cssv("--gain"),
+                lineWidth: 1,
+                lineStyle: 2,
+                axisLabelVisible: true,
+                title: "TP",
+              });
+            const tAt = (t) => Math.floor(t / H) * 3600;
+            const mk = [
+              {
+                time: tAt(pick.ot),
+                position: pick.dir > 0 ? "belowBar" : "aboveBar",
+                color: cssv("--gold"),
+                shape: pick.dir > 0 ? "arrowUp" : "arrowDown",
+                text: pick.dir > 0 ? "Buy" : "Sell",
+              },
+            ];
+            if (!pick.open && pick.ct)
+              mk.push({
+                time: tAt(pick.ct),
+                position: "inBar",
+                color: pick.pnl >= 0 ? cssv("--gain") : cssv("--loss"),
+                shape: "circle",
+                text: money(pick.pnl, cur, 1),
+              });
+            const valid = mk
+              .filter((x) => s.idx.has(x.time * 1000))
+              .sort((a, b) => a.time - b.time);
+            try {
+              cs.setMarkers(valid);
+            } catch (e) {}
+            const from = pick.ot / 1000 - 3600 * 60,
+              to = (pick.open ? last.time : pick.ct / 1000) + 3600 * 30;
+            setTimeout(() => {
+              try {
+                ch.timeScale().setVisibleRange({
+                  from: Math.max(data[0].time, from),
+                  to: Math.min(last.time, to),
+                });
+              } catch (e) {
+                ch.timeScale().fitContent();
+              }
+            }, 0);
+          } else {
+            ch.timeScale().setVisibleLogicalRange({
+              from: data.length - 160,
+              to: data.length + 3,
+            });
+          }
+          const r = rngF(Date.now() & 0xffff);
+          let lb = Object.assign({}, data[data.length - 1]);
+          timers.push(
+            setInterval(() => {
+              const np = lb.close * (1 + gauss(r) * c.vol * 0.12);
+              lb = {
+                time: lb.time,
+                open: lb.open,
+                high: Math.max(lb.high, np),
+                low: Math.min(lb.low, np),
+                close: np,
+              };
+              cs.update(lb);
+              const e = $("#lp");
+              if (e) e.textContent = fmtP(np, sym);
+              const ch2 = ((np - prev.close) / prev.close) * 100;
+              const e2 = $("#lchg");
+              if (e2) {
+                e2.className = cls(ch2);
+                e2.textContent =
+                  (ch2 > 0 ? "+" : "") + ch2.toFixed(2) + "% · 24 soat";
+              }
+            }, 1800),
+          );
+        }
+
+        /* ---------- News ---------- */
+        const NEWS_T = [
+          [0, 6, 0, "EUR", "Germaniya PPI m/m", "l", "0.1%", "-0.2%"],
+          [0, 14, 0, "USD", "CB Leading Index m/m", "l", "-0.2%", "-0.5%"],
+          [0, 23, 50, "JPY", "Savdo balansi", "l", "-0.31T", "-0.24T"],
+          [1, 6, 0, "GBP", "Davlat sektori qarzi", "l", "17.4B", "18.0B"],
+          [1, 12, 30, "CAD", "CPI m/m", "h", "0.2%", "-0.1%"],
+          [1, 13, 0, "USD", "FOMC a’zosi nutqi", "m", "", ""],
+          [1, 14, 0, "USD", "Richmond Manufacturing", "l", "-12", "-17"],
+          [2, 6, 0, "GBP", "CPI y/y", "h", "3.9%", "3.8%"],
+          [2, 14, 0, "EUR", "Iste’molchi ishonchi", "m", "-14", "-15"],
+          [2, 14, 30, "USD", "Neft zaxiralari", "m", "-1.2M", "3.7M"],
+          [2, 17, 0, "USD", "10 yillik obligatsiya auksioni", "l", "", "4.12%"],
+          [
+            3,
+            7,
+            15,
+            "EUR",
+            "Fransiya Flash Manufacturing PMI",
+            "m",
+            "48.6",
+            "48.2",
+          ],
+          [
+            3,
+            7,
+            30,
+            "EUR",
+            "Germaniya Flash Manufacturing PMI",
+            "h",
+            "49.8",
+            "49.5",
+          ],
+          [3, 8, 30, "GBP", "Flash Manufacturing PMI", "h", "47.1", "46.2"],
+          [
+            3,
+            12,
+            30,
+            "USD",
+            "Ishsizlik nafaqasi arizalari",
+            "m",
+            "229K",
+            "232K",
+          ],
+          [3, 13, 45, "USD", "Flash Manufacturing PMI", "h", "52.0", "52.0"],
+          [3, 14, 0, "USD", "Yangi uy sotuvlari", "m", "710K", "800K"],
+          [4, 0, 30, "JPY", "Tokyo Core CPI y/y", "m", "2.5%", "2.5%"],
+          [4, 6, 0, "GBP", "Chakana savdo m/m", "h", "0.3%", "0.5%"],
+          [4, 12, 30, "USD", "Core Durable Goods m/m", "m", "0.2%", "0.4%"],
+          [4, 14, 0, "USD", "UoM iste’molchi kayfiyati", "m", "55.0", "55.1"],
+          [4, 14, 0, "USD", "Fed raisi nutqi", "h", "", ""],
+        ];
+        let NEWS = null;
+        function news() {
+          if (NEWS) return NEWS;
+          const now = new Date();
+          const day = now.getDay();
+          const mon = new Date(now);
+          mon.setHours(0, 0, 0, 0);
+          const off = day === 0 ? 1 : day === 6 ? 2 : -(day - 1);
+          mon.setDate(mon.getDate() + off);
+          const r = rngF(Number(ymd(mon).replace(/-/g, "")));
+          NEWS = NEWS_T.map((e, i) => {
+            const t = Date.UTC(
+              mon.getFullYear(),
+              mon.getMonth(),
+              mon.getDate() + e[0],
+              e[1],
+              e[2],
+            );
+            let act = "";
+            if (t < Date.now() && e[6]) {
+              const f = parseFloat(e[6]);
+              const suf = e[6].replace(/^-?[\d.]+/, "");
+              const dp = (e[6].split(".")[1] || "").replace(/\D/g, "").length;
+              act =
+                (f + (r() - 0.5) * Math.max(0.2, Math.abs(f) * 0.06)).toFixed(
+                  dp,
+                ) + suf;
+            }
+            return {
+              id: i,
+              t,
+              cur: e[3],
+              name: e[4],
+              imp: e[5],
+              fc: e[6],
+              prev: e[7],
+              act,
+            };
+          });
+          return NEWS;
+        }
+        function vNews(v) {
+          const ev = news();
+          const curs = [...new Set(ev.map((e) => e.cur))];
+          if (!Object.keys(S.nCur).length)
+            curs.forEach((c) => (S.nCur[c] = true));
+          const vis = ev.filter((e) => S.nImp[e.imp] && S.nCur[e.cur]);
+          let rows = "",
+            lastD = "";
+          vis.forEach((e) => {
+            const d = new Date(e.t);
+            const dk = ymd(d);
+            if (dk !== lastD) {
+              rows +=
+                '<tr class="daysep"><td colspan="7">' +
+                WDL[d.getDay()] +
+                ", " +
+                d.getDate() +
+                " " +
+                MON[d.getMonth()] +
+                "</td></tr>";
+              lastD = dk;
+            }
+            const past = e.t < Date.now();
+            const beat =
+              e.act && e.fc
+                ? parseFloat(e.act) > parseFloat(e.fc)
+                  ? "up"
+                  : parseFloat(e.act) < parseFloat(e.fc)
+                    ? "dn"
+                    : ""
+                : "";
+            rows +=
+              '<tr class="' +
+              (past ? "past" : "") +
+              '"><td>' +
+              hm(e.t) +
+              "</td><td><b>" +
+              e.cur +
+              '</b></td><td><span class="imp ' +
+              e.imp +
+              '" title="' +
+              { h: "Yuqori", m: "O‘rta", l: "Past" }[e.imp] +
+              '"><i></i><i></i><i></i></span></td><td style="white-space:normal;min-width:180px">' +
+              esc(e.name) +
+              '</td><td class="r act ' +
+              beat +
+              '"><b>' +
+              (e.act || "—") +
+              '</b></td><td class="r">' +
+              (e.fc || "—") +
+              '</td><td class="r mut">' +
+              (e.prev || "—") +
+              "</td></tr>";
+          });
+          v.innerHTML =
+            '<div class="countdown" id="cd"></div>' +
+            '<div class="card" style="margin-bottom:14px"><div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center"><div><label class="f">Ta’sir darajasi</label><div class="tagpick">' +
+            [
+              ["h", "Yuqori"],
+              ["m", "O‘rta"],
+              ["l", "Past"],
+            ]
+              .map(
+                (x) =>
+                  '<button data-imp="' +
+                  x[0] +
+                  '" class="' +
+                  (S.nImp[x[0]] ? "on" : "") +
+                  '">' +
+                  x[1] +
+                  "</button>",
+              )
+              .join("") +
+            "</div></div>" +
+            '<div><label class="f">Valyuta</label><div class="tagpick">' +
+            curs
+              .map(
+                (c) =>
+                  '<button data-ncur="' +
+                  c +
+                  '" class="' +
+                  (S.nCur[c] ? "on" : "") +
+                  '">' +
+                  c +
+                  "</button>",
+              )
+              .join("") +
+            "</div></div></div></div>" +
+            '<div class="card"><div class="tw"><table><tr><th>Vaqt</th><th>Valyuta</th><th>Ta’sir</th><th>Hodisa</th><th class="r">Haqiqiy</th><th class="r">Prognoz</th><th class="r">Oldingi</th></tr>' +
+            (rows ||
+              '<tr><td colspan="7"><div class="empty">Filtrga mos hodisa yo‘q.</div></td></tr>') +
+            "</table></div>" +
+            '<p class="mut" style="font-size:12px;margin:12px 0 0">Vaqt qurilmangiz mintaqasida. Namuna ma’lumotlar — savdodan oldin <a class="gold" href="https://www.forexfactory.com/calendar" target="_blank" rel="noopener">Forex Factory</a> yoki <a class="gold" href="https://www.investing.com/economic-calendar/" target="_blank" rel="noopener">Investing.com</a> bilan tekshiring.</p></div>';
+          const tick = () => {
+            const el = $("#cd");
+            if (!el) return;
+            const nx = news()
+              .filter((e) => e.imp === "h" && e.t > Date.now())
+              .sort((a, b) => a.t - b.t)[0];
+            if (!nx) {
+              el.className = "countdown";
+              el.innerHTML =
+                '<div class="mut">Bu hafta uchun yuqori ta’sirli hodisalar tugadi.</div>';
+              return;
+            }
+            const ms = nx.t - Date.now();
+            const dd = Math.floor(ms / 864e5),
+              hh = Math.floor(ms / 36e5) % 24,
+              mm = Math.floor(ms / 6e4) % 60,
+              ss = Math.floor(ms / 1e3) % 60;
+            const alert = ms < 30 * 60000;
+            el.className = "countdown" + (alert ? " alert" : "");
+            el.innerHTML =
+              '<span class="' +
+              (alert ? "dn pulse" : "gold") +
+              '">' +
+              ic("bell", 26) +
+              '</span><div><div class="mut" style="font-size:12px">Keyingi yuqori ta’sirli hodisa · ' +
+              nx.cur +
+              '</div><div style="font-weight:600;font-size:15px">' +
+              esc(nx.name) +
+              " — " +
+              WDL[new Date(nx.t).getDay()] +
+              " " +
+              hm(nx.t) +
+              "</div>" +
+              (alert
+                ? '<div class="dn" style="font-size:12px;margin-top:2px">30 daqiqadan kam qoldi: yangi pozitsiya ochmang, SL’ni tekshiring.</div>'
+                : "") +
+              '</div><span style="flex:1"></span><div class="t ' +
+              (alert ? "dn" : "") +
+              '">' +
+              (dd ? dd + "k " : "") +
+              pad(hh) +
+              ":" +
+              pad(mm) +
+              ":" +
+              pad(ss) +
+              "</div>";
+          };
+          tick();
+          timers.push(setInterval(tick, 1000));
+        }
+
+        /* ---------- Challenge ---------- */
+        const CHW = [
+          [
+            "1-hafta · Poydevor va risk",
+            [
+              "Oltinda lot, point, spread, margin’ni o‘rganish",
+              "Cent yoki demo akkaunt ochish",
+              "1% riskni lotga aylantirish: 10 ta mashq (Lot kalkulyatori)",
+              "Trading jurnalni sozlash: hisob qo‘shish, toza boshlash",
+              "Sessiyalar vaqti va News bo‘limini o‘rganish",
+              "Market structure: HH/HL/LH/LL — 20 ta misol",
+              "Hafta tahlili, dam olish",
+            ],
+          ],
+          [
+            "2-hafta · SNR va backtest",
+            [
+              "H4 va H1 da support/resistance chizish",
+              "Malaysian SNR: A va V levellar",
+              "Fresh va unfresh levellar",
+              "QM (Quasimodo): 10 ta misol",
+              "Backtest: 15 ta savdo",
+              "Backtest: 15 ta savdo",
+              "Winrate va o‘rtacha RR ni hisoblash",
+            ],
+          ],
+          [
+            "3-hafta · Demo/cent, faqat qoida bilan",
+            [
+              "Savdo: max 2 ta, 1% risk",
+              "Savdo + 1R da breakeven qoidasi",
+              "Savdo + har savdoni jurnalga yozish",
+              "Savdo + faqat London/NY vaqtida",
+              "Savdo + hissiyotlarni yozish",
+              "Backtest: 20 ta savdo",
+              "Haftalik hisobot: qoidaga rioya %",
+            ],
+          ],
+          [
+            "4-hafta · Real sinov va xulosa",
+            [
+              "Kichik real savdo, kunlik −3% limit",
+              "Real savdo + 50% qisman yopish",
+              "Real savdo + yangilik paytida savdo yo‘q",
+              "Real savdo, max 2 ta",
+              "Real savdo, jurnal",
+              "5 ta signalni tahlil: nega shu yerda kirildi?",
+              "Jurnaldan top-3 xatoni topish",
+              "Qoidalarni yangilash",
+              "Yakuniy tekshiruv: shartlar bajarildimi?",
+            ],
+          ],
+        ];
+        function chal() {
+          if (!S.meta.chal)
+            S.meta.chal = { start: "2026-09-28", done: [], bt: 0 };
+          return S.meta.chal;
+        }
+        function vChal(v) {
+          const C = chal(),
+            st = parseYmd(C.start),
+            en = new Date(st);
+          en.setDate(en.getDate() + 30);
+          const t0 = st.getTime(),
+            t1 = en.getTime();
+          const inP = (k) => {
+            const t = parseYmd(k).getTime();
+            return t >= t0 && t < t1;
+          };
+          const jk = Object.keys(S.journal).filter(inP);
+          let chk = 0;
+          jk.forEach((k) => {
+            chk += Object.values(S.journal[k].rules || {}).filter(
+              Boolean,
+            ).length;
+          });
+          const adh = jk.length ? (chk / (jk.length * RULES.length)) * 100 : 0;
+          const jt = S.manual.filter((m) => m.ct >= t0 && m.ct < t1).length;
+          const tr = allTrades().filter((t) => t.ct >= t0 && t.ct < t1);
+          let eq =
+              capital() +
+              allTrades()
+                .filter((t) => t.ct < t0)
+                .reduce((a, t) => a + t.pnl, 0),
+            pk = eq,
+            dd = 0;
+          tr.forEach((t) => {
+            eq += t.pnl;
+            pk = Math.max(pk, eq);
+            dd = Math.max(dd, pk ? ((pk - eq) / pk) * 100 : 0);
+          });
+          const crit = [
+            [
+              "Qoidaga rioya",
+              adh.toFixed(0) + "%",
+              "90%+",
+              adh >= 90,
+              jk.length + " ta jurnal kuni",
+            ],
+            [
+              "Backtest savdolar",
+              C.bt,
+              "50+",
+              C.bt >= 50,
+              '<span style="display:inline-flex;gap:4px"><button class="btn sm" data-bt="-1">−1</button><button class="btn sm" data-bt="1">+1</button><button class="btn sm" data-bt="5">+5</button></span>',
+            ],
+            [
+              "Jurnaldagi savdolar",
+              jt,
+              "15+",
+              jt >= 15,
+              "Journal’da qo‘shilganlar",
+            ],
+            [
+              "Maks. drawdown",
+              dd.toFixed(1) + "%",
+              "< 10%",
+              dd < 10,
+              "Tanlangan hisob(lar)",
+            ],
+          ];
+          const passed = crit.filter((c) => c[3]).length;
+          const n = C.done.length;
+          let h =
+            '<section class="hero"><div style="flex:1;min-width:220px"><div class="lbl">' +
+            st.getDate() +
+            " " +
+            MON[st.getMonth()] +
+            " – " +
+            (() => {
+              const e = new Date(en);
+              e.setDate(e.getDate() - 1);
+              return e.getDate() + " " + MON[e.getMonth()];
+            })() +
+            ' · XAU/USD · Maqsad: pul emas, qoida</div><div class="big">' +
+            n +
+            '<span style="font-size:24px;color:var(--tx3)"> / 30 kun</span></div><div class="progress" style="max-width:420px;margin-top:12px"><i style="width:' +
+            (n / 30) * 100 +
+            '%"></i></div></div>' +
+            '<div><label class="f" for="chstart">Boshlanish sanasi</label><input type="date" id="chstart" value="' +
+            C.start +
+            '" style="width:auto"></div></section>' +
+            '<div class="grid g4" style="margin-bottom:14px">' +
+            crit
+              .map(
+                (c) =>
+                  '<div class="card kpi" style="' +
+                  (c[3] ? "border-color:var(--gain)" : "") +
+                  '"><div class="l">' +
+                  c[0] +
+                  " · shart " +
+                  esc(c[2]) +
+                  '</div><div class="v ' +
+                  (c[3] ? "up" : "") +
+                  '">' +
+                  c[1] +
+                  (c[3] ? " " + ic("check", 18) : "") +
+                  '</div><div class="s">' +
+                  c[4] +
+                  "</div></div>",
+              )
+              .join("") +
+            "</div>" +
+            '<div class="card" style="margin-bottom:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="chip ' +
+            (passed === 4 ? "g" : "au") +
+            '">' +
+            passed +
+            ' / 4 shart</span><span style="font-size:13px;color:var(--tx2)">' +
+            (passed === 4
+              ? "Challenge shartlari bajarildi — keyingi darajaga tayyorsiz."
+              : "Foyda bo‘lmasa ham, 4 ta shart bajarilsa — challenge o‘tildi.") +
+            "</span></div>" +
+            '<div class="grid g32"><div>';
+          let idx = 0;
+          CHW.forEach((w) => {
+            h +=
+              '<div class="card" style="margin-bottom:14px"><h3>' +
+              w[0] +
+              '</h3><div class="rules">';
+            w[1].forEach((t) => {
+              idx++;
+              const d = new Date(st);
+              d.setDate(d.getDate() + idx - 1);
+              const on = C.done.includes(idx);
+              h +=
+                '<label><input type="checkbox" data-chd="' +
+                idx +
+                '"' +
+                (on ? " checked" : "") +
+                '><span style="flex:1' +
+                (on ? ";color:var(--tx3);text-decoration:line-through" : "") +
+                '"><b style="font-weight:600">' +
+                idx +
+                ".</b> " +
+                t +
+                '</span><span class="mut" style="font-size:12px">' +
+                d.getDate() +
+                " " +
+                MON[d.getMonth()].slice(0, 3) +
+                "</span></label>";
+            });
+            h += "</div></div>";
+          });
+          h +=
+            '</div><div><div class="card" style="position:sticky;top:calc(80px + env(safe-area-inset-top,0px))"><h3>' +
+            ic("flag", 15) +
+            'Temir qoidalar</h3><div class="rules">' +
+            RULES.map(
+              (r, i) =>
+                '<label style="cursor:default"><span class="dn" style="font-weight:600;width:16px">' +
+                (i + 1) +
+                "</span>" +
+                r +
+                "</label>",
+            ).join("") +
+            "</div></div></div></div>";
+          v.innerHTML = h;
+        }
+
+        /* ---------- Export & data ---------- */
+        const csvCell = (x) => {
+          const s = String(x == null ? "" : x);
+          return /[",\n;]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+        };
+        const toCsv = (rows) =>
+          rows.map((r) => r.map(csvCell).join(",")).join("\r\n");
+        async function exportCsv(kind) {
+          let dl = null;
+          try {
+            dl =
+              window.claude && window.claude.use
+                ? await window.claude.use("downloads")
+                : null;
+          } catch (e) {}
+          let rows, name;
+          if (kind === "trades") {
+            const tr = allTrades();
+            rows = [
+              [
+                "Sana",
+                "Ochilish",
+                "Yopilish",
+                "Hisob",
+                "Aktiv",
+                "Yo‘nalish",
+                "Lot",
+                "Kirish",
+                "Chiqish",
+                "SL",
+                "TP",
+                "R",
+                "P&L",
+                "Setup",
+                "Teglar",
+                "Manba",
+              ],
+            ].concat(
+              tr.map((t) => [
+                ymd(new Date(t.ct)),
+                hm(t.ot),
+                hm(t.ct),
+                (accById(t.acc) || {}).name,
+                SYMS[t.sym].name,
+                t.dir > 0 ? "Buy" : "Sell",
+                Number(t.lots).toFixed(2),
+                t.entry,
+                t.exit,
+                t.sl == null ? "" : t.sl,
+                t.tp == null ? "" : t.tp,
+                t.R == null ? "" : t.R,
+                t.pnl,
+                t.setup || "",
+                (t.tags || []).join(" | "),
+                t.src === "manual" ? "Jurnal" : "Broker",
+              ]),
+            );
+            name = "savdolar-" + ymd(new Date()) + ".csv";
+          } else {
+            const days = byDay(allTrades());
+            rows = [
+              [
+                "Sana",
+                "Ruhiy holat",
+                "Bias",
+                "Reja",
+                "Qoidalar bajarildi",
+                "Savdolar soni",
+                "Kunlik P&L",
+                "Refleksiya",
+              ],
+            ].concat(
+              Object.keys(S.journal)
+                .sort()
+                .map((k) => {
+                  const j = S.journal[k],
+                    l = days[k] || [];
+                  return [
+                    k,
+                    j.mental || "",
+                    j.bias || "",
+                    j.biasNote || "",
+                    Object.values(j.rules || {}).filter(Boolean).length +
+                      "/" +
+                      RULES.length,
+                    l.length,
+                    Math.round(l.reduce((a, t) => a + t.pnl, 0) * 100) / 100,
+                    j.post || "",
+                  ];
+                }),
+            );
+            name = "jurnal-" + ymd(new Date()) + ".csv";
+          }
+          if (rows.length < 2) {
+            toast("Eksport uchun ma’lumot yo‘q");
+            return;
+          }
+          const data = "\ufeff" + toCsv(rows);
+          if (!dl) {
+            const u = URL.createObjectURL(
+              new Blob([data], { type: "text/csv;charset=utf-8" }),
+            );
+            const a = document.createElement("a");
+            a.href = u;
+            a.download = name;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(u), 1000);
+            toast("Fayl yuklab olindi");
+            return;
+          }
+          try {
+            await dl.save({ filename: name, data });
+            toast("Fayl saqlandi");
+          } catch (e) {
+            if (e && e.code !== "declined") toast("Faylni saqlab bo‘lmadi");
+          }
+        }
+        let wipeArm = false;
+        function dataCard() {
+          return (
+            '<div class="card" style="margin-top:22px"><h3>' +
+            ic("dl", 15) +
+            "Ma’lumotlar</h3>" +
+            '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn" data-exp="trades">' +
+            ic("dl") +
+            'Savdolar CSV</button><button class="btn" data-exp="journal">' +
+            ic("dl") +
+            "Jurnal CSV</button></div>" +
+            '<p class="mut" style="font-size:12px;margin:0 0 12px">CSV fayl Excel va Google Sheets’da ochiladi. Savdolar tanlangan hisob(lar) bo‘yicha eksport qilinadi.</p>' +
+            '<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="togglemock">' +
+            (S.meta.mockOff
+              ? "Namuna savdolarni ko‘rsatish"
+              : "Namuna savdolarni yashirish") +
+            '</button><button class="btn ' +
+            (wipeArm ? "pri" : "ghost dn") +
+            '" data-act="wipe">' +
+            ic("trash") +
+            (wipeArm
+              ? "Tasdiqlang: hammasi o‘chadi"
+              : "Jurnal va savdolarni tozalash") +
+            "</button></div></div>"
+          );
+        }
+
+        /* ---------- Academy ---------- */
+        const svgStructure =
+          '<svg viewBox="0 0 520 200" role="img" aria-label="Market structure: HH va HL"><polyline points="20,170 90,110 130,140 210,70 250,105 330,40 370,80 450,20" fill="none" stroke="var(--gold)" stroke-width="2.5"/><g font-size="12" fill="var(--tx2)" font-family="Manrope,sans-serif"><text x="78" y="100">HH</text><text x="120" y="160">HL</text><text x="198" y="60">HH</text><text x="240" y="125">HL</text><text x="318" y="30">HH</text><text x="360" y="100">HL</text></g><line x1="130" y1="140" x2="250" y2="105" stroke="var(--gain)" stroke-dasharray="4 4"/><text x="380" y="185" font-size="12" fill="var(--tx3)" font-family="Manrope,sans-serif">Uptrend: har bir cho‘qqi va tubi yuqoriroq</text></svg>';
+        const svgLiq =
+          '<svg viewBox="0 0 520 210" role="img" aria-label="Likvidlik sweep va order block"><line x1="30" y1="150" x2="490" y2="150" stroke="var(--loss)" stroke-dasharray="5 4"/><text x="36" y="168" font-size="12" fill="var(--loss)" font-family="Manrope,sans-serif">SSL — sotish stoplari</text><polyline points="40,100 100,148 150,110 210,150 260,120 300,178 330,95 400,60 470,40" fill="none" stroke="var(--gold)" stroke-width="2.5"/><rect x="286" y="150" width="30" height="28" fill="var(--gainsoft)" stroke="var(--gain)"/><text x="232" y="200" font-size="12" fill="var(--gain)" font-family="Manrope,sans-serif">Order Block + sweep</text><text x="340" y="88" font-size="12" fill="var(--tx2)" font-family="Manrope,sans-serif">BOS → uptrend</text></svg>';
+        const svgOTE =
+          '<svg viewBox="0 0 520 200" role="img" aria-label="OTE zonasi"><polyline points="40,180 200,30 300,110" fill="none" stroke="var(--gold)" stroke-width="2.5"/><rect x="30" y="92" width="470" height="30" fill="var(--goldsoft)"/><g font-size="12" font-family="Manrope,sans-serif" fill="var(--tx2)"><text x="420" y="34">0% (High)</text><text x="400" y="88">62% — OTE</text><text x="400" y="136">79%</text><text x="420" y="184">100% (Low)</text></g></svg>';
+        const ART = [
+          {
+            lv: "Boshlang‘ich",
+            d: "Bozor tili, risk va asosiy tuzilma. Bu bosqichsiz strategiya ishlamaydi.",
+            items: [
+              [
+                "Lot, pip va kontrakt hajmi",
+                "8 daq",
+                '<p>Lot — pozitsiya hajmi. Standart lot (1.00) oltinda 100 untsiyaga teng, ya’ni narx 1$ yursa 100$ foyda yoki zarar. 0.01 lotda esa 1$ harakat = 1$.</p><h4>XAU/USD uchun eslab qoling</h4><ul><li>0.01 lot: narx 1$ → 1$ P&amp;L</li><li>0.10 lot: narx 1$ → 10$ P&amp;L</li><li>1.00 lot: narx 1$ → 100$ P&amp;L</li></ul><p>EUR/USD da 1 pip = 0.0001. 1.00 lotda 1 pip ≈ 10$.</p><div class="note">Spread — buy va sell narxi orasidagi farq. Oltinda yangiliklar paytida spread bir necha baravar kengayadi.</div>',
+              ],
+              [
+                "Market structure asoslari",
+                "10 daq",
+                "<p>Bozor uch holatda bo‘ladi: uptrend, downtrend va range. Uptrendda har bir cho‘qqi (HH) va tub (HL) oldingisidan yuqori.</p>" +
+                  svgStructure +
+                  '<ul><li><b>Uptrend:</b> HH + HL — faqat buy qidiriladi</li><li><b>Downtrend:</b> LH + LL — faqat sell qidiriladi</li><li><b>Range:</b> chegaralardan savdo yoki kutish</li></ul><div class="note">Oxirgi HL buzilsa — trend zaiflashgani haqida birinchi signal.</div>',
+              ],
+              [
+                "Support va Resistance",
+                "9 daq",
+                "<p>Support — narx ko‘p marta pastdan qaytgan daraja, resistance — yuqoridan qaytgan daraja. Kuchli daraja: ko‘p marta test qilingan va katta TF (H4, D1) da ko‘rinadigan.</p><h4>SNR flip</h4><p>Buzilgan resistance ko‘pincha supportga aylanadi. Eng sifatli kirish — buzilishdan keyingi birinchi retest.</p><ul><li>Darajani chiziq emas, zona sifatida chizing</li><li>H4 da chizing, M15 da kirish qidiring</li></ul>",
+              ],
+              [
+                "Risk: 1–2% qoidasi va lot formulasi",
+                "12 daq",
+                '<p>Professional treyder avval qancha yo‘qotishga tayyorligini hisoblaydi, keyin lotni tanlaydi.</p><div class="fx">Lot = (Balans × Risk %) ÷ (SL masofasi × kontrakt qiymati)</div><h4>Misol (XAU/USD)</h4><p>Balans 500$, risk 1% = 5$. SL masofasi 2.50$. Kontrakt qiymati 100.<br>Lot = 5 ÷ (2.50 × 100) = 0.02</p><div class="note">Ketma-ket 10 ta zarar 1% riskda balansning ~10% ini oladi, 5% riskda esa ~40% ini. Omon qolish — birinchi vazifa.</div>',
+              ],
+            ],
+          },
+          {
+            lv: "O‘rta",
+            d: "Zonalar, multi-timeframe va intizom tizimi.",
+            items: [
+              [
+                "Multi-timeframe tahlil",
+                "10 daq",
+                "<p>Uch qatlam: <b>D1/H4</b> — yo‘nalish, <b>H1</b> — zona, <b>M15/M5</b> — kirish. Katta TF qarshi bo‘lsa, kichik TF signali kuchsiz.</p><ul><li>Yuqoridan pastga tahlil qiling, hech qachon teskari emas</li><li>Kirish TF ni o‘zgartirib turmang — bittasini tanlang</li></ul>",
+              ],
+              [
+                "Supply va Demand zonalari",
+                "11 daq",
+                "<p>Zona — narx kuchli impuls bilan chiqib ketgan joy. Impuls qanchalik kuchli bo‘lsa, buyurtmalar shuncha ko‘p qolgan.</p><ul><li>Fresh (tegilmagan) zona kuchliroq</li><li>Uch marta test qilingan zona zaiflashadi</li><li>Zonaga yaqinlashishda tezlik pasaysa — reaksiya ehtimoli yuqori</li></ul>",
+              ],
+              [
+                "Malaysian SNR va QM",
+                "12 daq",
+                '<p>Malaysian SNR darajani sham tanalari (close) bo‘yicha chizadi: <b>A-level</b> (cho‘qqidagi resistance) va <b>V-level</b> (tubdagi support).</p><h4>QM (Quasimodo)</h4><p>Narx yangi HH qiladi, keyin oldingi HL ni buzadi va QM darajasiga retest qiladi — teskari burilish modeli.</p><div class="note">Fresh daraja — fitil (wick) bilan tegilmagan daraja. Unfresh darajadan savdo ehtiyotkorlik talab qiladi.</div>',
+              ],
+              [
+                "Trading jurnal qanday yuritiladi",
+                "7 daq",
+                "<p>Jurnal — sizning shaxsiy statistikangiz. Har savdo uchun: setup, kirish sababi, R natija, hissiyot va qoidaga rioya.</p><ul><li>Haftada bir marta — eng ko‘p xato tegini toping</li><li>Oyda bir marta — qaysi setup eng ko‘p R beradi</li><li>Yaxshi kun = qoidaga to‘liq amal qilingan kun, foyda emas</li></ul>",
+              ],
+            ],
+          },
+          {
+            lv: "Ilg‘or",
+            d: "Smart Money: likvidlik, order block va tuzilma signallari.",
+            items: [
+              [
+                "Likvidlik: BSL, SSL va sweep",
+                "12 daq",
+                "<p>Cho‘qqilar ustida sotib olish stoplari (BSL), tublar ostida sotish stoplari (SSL) to‘planadi. Yirik o‘yinchilar pozitsiya ochish uchun shu likvidlikdan foydalanadi.</p>" +
+                  svgLiq +
+                  "<p>Sweep — narx tubdan biroz o‘tib, stoplarni ishga tushirib, keskin qaytishi. Sweep’dan keyingi BOS — kuchli kirish signali.</p>",
+              ],
+              [
+                "Order Block va FVG",
+                "11 daq",
+                "<p><b>Order Block</b> — kuchli impulsdan oldingi oxirgi teskari sham. <b>FVG</b> (Fair Value Gap) — uch sham orasida narx o‘tib ketgan, to‘ldirilmagan bo‘shliq.</p><ul><li>OB + FVG bir joyda bo‘lsa — sifatli zona</li><li>SL — OB ning narigi chetidan</li><li>FVG ko‘pincha qisman to‘ldiriladi (50%)</li></ul>",
+              ],
+              [
+                "BOS va CHoCH",
+                "9 daq",
+                '<p><b>BOS</b> (Break of Structure) — trend yo‘nalishida yangi cho‘qqi/tub. <b>CHoCH</b> (Change of Character) — trendga qarshi birinchi buzilish, ya’ni mumkin bo‘lgan burilish.</p><div class="note">CHoCH dan keyin darhol kirmang — retest va tasdiqni kuting.</div>',
+              ],
+              [
+                "Psixologiya: FOMO, revenge va tilt",
+                "10 daq",
+                "<p>Ko‘pchilik treyderlar strategiya tufayli emas, hissiyot tufayli yutqazadi.</p><ul><li><b>FOMO:</b> ketib qolgan narxni quvish — qoida: “o‘tib ketgan poyezdga chiqilmaydi”</li><li><b>Revenge:</b> zarardan keyin darhol yangi savdo — qoida: zarardan keyin 30 daqiqa tanaffus</li><li><b>Foydani qaytarib berish:</b> 1R da breakeven va 50% yopish bu muammoni mexanik hal qiladi</li></ul>",
+              ],
+            ],
+          },
+          {
+            lv: "Master",
+            d: "ICT vaqt modellari, statistik ustunlik va prop firm darajasi.",
+            items: [
+              [
+                "ICT killzone va Power of 3",
+                "12 daq",
+                "<p>Killzone — likvidlik eng yuqori vaqtlar: London (07:00–10:00 UTC) va New York (12:00–15:00 UTC). Oltin uchun eng kuchli harakatlar shu oynalarda.</p><h4>Power of 3 (AMD)</h4><ul><li><b>Accumulation</b> — Osiyo sessiyasi, tor range</li><li><b>Manipulation</b> — Londonda range’ning bir tomoni sweep qilinadi</li><li><b>Distribution</b> — haqiqiy yo‘nalishdagi harakat</li></ul>",
+              ],
+              [
+                "OTE — optimal kirish zonasi",
+                "9 daq",
+                "<p>Impulsdan keyingi pullback’ning 62–79% Fibonacci oralig‘i ICT’da OTE deb ataladi.</p>" +
+                  svgOTE +
+                  "<p>OTE + OB/FVG + killzone vaqti mos tushsa — eng yuqori ehtimolli kirish.</p>",
+              ],
+              [
+                "Backtest va expectancy",
+                "12 daq",
+                '<p>Strategiyaning ustunligi (edge) raqam bilan isbotlanadi.</p><div class="fx">Expectancy = (Win% × o‘rtacha foyda) − (Loss% × o‘rtacha zarar)</div><p>Misol: winrate 45%, o‘rtacha foyda 2R, zarar 1R → 0.45×2 − 0.55×1 = +0.35R har bir savdoga.</p><ul><li>Kamida 100 ta backtest savdo</li><li>Keyin 30–50 ta forward test (demo/cent)</li></ul>',
+              ],
+              [
+                "Prop firm qoidalari va drawdown",
+                "10 daq",
+                '<p>Prop firm’lar (FTMO va boshqalar) odatda kunlik ~5% va umumiy ~10% maksimal zarar limitini qo‘yadi. Aniq qoidalarni har doim firma saytidan tekshiring.</p><ul><li>Challenge’da riskni 0.5% atrofida ushlang</li><li>Kunlik limitning yarmiga yetganda savdoni to‘xtating</li><li>Yangilik va dam olish kunlari qoidalarini oldindan o‘qing</li></ul><div class="note">Challenge’dan o‘tishning siri — tezlik emas, uzoq omon qolish.</div>',
+              ],
+            ],
+          },
+        ];
+        function vAcad(v) {
+          const total = ART.reduce((s, l) => s + l.items.length, 0),
+            done = S.meta.read.length;
+          let h =
+            '<div class="card" style="margin-bottom:22px"><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><div style="flex:1;min-width:200px"><div style="font-weight:600">Noldan professionalgacha yo‘l xaritasi</div><div class="progress"><i style="width:' +
+            (done / total) * 100 +
+            '%"></i></div><div class="mut" style="font-size:12px">' +
+            done +
+            " / " +
+            total +
+            ' ta mavzu o‘qildi</div></div><span class="chip au">' +
+            ic("acad", 14) +
+            "4 daraja</span></div></div>";
+          let n = 0;
+          ART.forEach((l, li) => {
+            h +=
+              '<section class="lvl"><h2>' +
+              l.lv +
+              '</h2><p class="d">' +
+              l.d +
+              '</p><div class="arts">';
+            l.items.forEach((a, ai) => {
+              n++;
+              const id = li + "-" + ai;
+              const rd = S.meta.read.includes(id);
+              h +=
+                '<button class="art" data-art="' +
+                id +
+                '"><span class="n">' +
+                n +
+                "-mavzu · " +
+                a[1] +
+                "</span><b>" +
+                a[0] +
+                "</b>" +
+                (rd
+                  ? '<span class="done">' + ic("check", 13) + " O‘qildi</span>"
+                  : "<span>O‘qish uchun bosing</span>") +
+                "</button>";
+            });
+            h += "</div></section>";
+          });
+          v.innerHTML = h;
+        }
+        function openArt(id) {
+          const [li, ai] = id.split("-").map(Number);
+          const a = ART[li].items[ai];
+          const rd = S.meta.read.includes(id);
+          modal(
+            '<div class="hd"><div style="flex:1"><div class="mut" style="font-size:12px;margin-bottom:4px">' +
+              ART[li].lv +
+              " · " +
+              a[1] +
+              "</div><h2>" +
+              a[0] +
+              '</h2></div><button class="btn sm ghost" data-close aria-label="Yopish">' +
+              ic("x") +
+              '</button></div><article class="prose">' +
+              a[2] +
+              "</article>" +
+              '<div style="display:flex;gap:8px;margin-top:20px;flex-wrap:wrap"><button class="btn ' +
+              (rd ? "" : "pri") +
+              '" data-markread="' +
+              id +
+              '">' +
+              ic("check") +
+              (rd ? "O‘qildi" : "O‘qildi deb belgilash") +
+              "</button>" +
+              (ai < ART[li].items.length - 1
+                ? '<button class="btn" data-art="' +
+                  li +
+                  "-" +
+                  (ai + 1) +
+                  '">Keyingi mavzu' +
+                  ic("cr") +
+                  "</button>"
+                : "") +
+              "</div>",
+          );
+        }
+
+        /* ---------- Accounts modal ---------- */
+        function modal(html) {
+          $("#modal").innerHTML =
+            '<div class="scrim" data-scrim><div class="drawer" role="dialog" aria-modal="true">' +
+            html +
+            "</div></div>";
+          document.body.style.overflow = "hidden";
+        }
+        function closeModal() {
+          $("#modal").innerHTML = "";
+          document.body.style.overflow = "";
+        }
+        let editId = null;
+        function openAccounts() {
+          const ed = editId
+            ? editId === "new"
+              ? {
+                  id: "new",
+                  name: "",
+                  broker: "",
+                  number: "",
+                  capital: "",
+                  currency: "USD",
+                  leverage: "1:100",
+                  platform: "MT5",
+                  link: { on: false },
+                }
+              : accById(editId)
+            : null;
+          let h =
+            '<div class="hd"><h2>Hisoblar</h2><button class="btn sm ghost" data-close aria-label="Yopish">' +
+            ic("x") +
+            '</button></div><p class="mut" style="margin:-6px 0 16px">Bitta profilda maksimal 3 ta hisob.</p>';
+          if (!ed) {
+            h +=
+              S.accounts
+                .map(
+                  (a) =>
+                    '<div class="acct' +
+                    (S.sel === a.id ? " on" : "") +
+                    '"><div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap"><div style="flex:1;min-width:180px"><div style="font-weight:600;font-size:15px">' +
+                    esc(a.name) +
+                    '</div><div class="mut" style="font-size:12px">' +
+                    esc(a.broker) +
+                    " · №" +
+                    esc(a.number) +
+                    " · " +
+                    esc(a.platform) +
+                    " · " +
+                    esc(a.leverage) +
+                    '</div><div style="margin-top:6px">' +
+                    money(Number(a.capital), a.currency) +
+                    ' <span class="mut">boshlang‘ich</span></div></div>' +
+                    '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
+                    (a.link && a.link.on
+                      ? '<span class="chip g"><span class="dot"></span>Ulangan</span>'
+                      : '<span class="chip">Ulanmagan</span>') +
+                    '<button class="btn sm" data-edit="' +
+                    a.id +
+                    '">' +
+                    ic("edit") +
+                    "Tahrirlash</button></div></div></div>",
+                )
+                .join("") +
+              (S.accounts.length < 3
+                ? '<button class="btn" data-edit="new">' +
+                  ic("plus") +
+                  "Hisob qo‘shish</button>"
+                : '<p class="mut" style="font-size:12px">Limitga yetildi: yangi hisob uchun birini o‘chiring.</p>') +
+              dataCard();
+          } else {
+            h +=
+              '<div class="fgrid" style="grid-template-columns:repeat(2,minmax(0,1fr))">' +
+              ain("name", "Hisob nomi", ed.name, "text", "FTMO Challenge") +
+              ain("broker", "Broker", ed.broker, "text", "Exness") +
+              ain("number", "Hisob raqami", ed.number, "text", "12345678") +
+              ain(
+                "capital",
+                "Boshlang‘ich kapital",
+                ed.capital,
+                "number",
+                "1000",
+              ) +
+              '<div><label class="f">Valyuta</label><select id="a_currency">' +
+              ["USD", "EUR", "GBP", "USC"]
+                .map(
+                  (c) =>
+                    "<option" +
+                    (ed.currency === c ? " selected" : "") +
+                    ">" +
+                    c +
+                    "</option>",
+                )
+                .join("") +
+              "</select></div>" +
+              '<div><label class="f">Leverage</label><select id="a_leverage">' +
+              ["1:30", "1:50", "1:100", "1:200", "1:500", "1:1000"]
+                .map(
+                  (c) =>
+                    "<option" +
+                    (ed.leverage === c ? " selected" : "") +
+                    ">" +
+                    c +
+                    "</option>",
+                )
+                .join("") +
+              "</select></div>" +
+              '<div><label class="f">Platforma</label><select id="a_platform">' +
+              ["MT5", "cTrader"]
+                .map(
+                  (c) =>
+                    "<option" +
+                    (ed.platform === c ? " selected" : "") +
+                    ">" +
+                    c +
+                    "</option>",
+                )
+                .join("") +
+              "</select></div></div>" +
+              '<div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap"><button class="btn pri" data-act="saveacc">' +
+              ic("check") +
+              'Saqlash</button><button class="btn" data-act="cancelacc">Bekor qilish</button>' +
+              (ed.id !== "new" && S.accounts.length > 1
+                ? '<button class="btn ghost dn" data-act="delacc">' +
+                  ic("trash") +
+                  "O‘chirish</button>"
+                : "") +
+              '<span class="dn" id="aerr" style="font-size:12px;align-self:center"></span></div>';
+            if (ed.id !== "new") {
+              h +=
+                '<div class="card" style="margin-top:20px"><h3>' +
+                ic("link", 15) +
+                "Read-only sinxronizatsiya</h3>" +
+                '<div class="tagpick" style="margin-bottom:12px"><button data-lmode="investor" class="' +
+                ((ed.link.mode || "investor") === "investor" ? "on" : "") +
+                '">Investor parol</button><button data-lmode="api" class="' +
+                (ed.link.mode === "api" ? "on" : "") +
+                '">API / Webhook</button></div>' +
+                ((ed.link.mode || "investor") === "investor"
+                  ? '<div class="fgrid" style="grid-template-columns:repeat(2,minmax(0,1fr))">' +
+                    ain(
+                      "l_server",
+                      "Server",
+                      ed.link.server || "",
+                      "text",
+                      "Exness-MT5Real8",
+                    ) +
+                    ain("l_login", "Login", ed.number, "text", "") +
+                    '<div style="grid-column:1/-1"><label class="f">Investor (faqat o‘qish) paroli</label><input type="password" id="l_pass" autocomplete="off" placeholder="Investor parol"></div></div>'
+                  : '<div><label class="f">Webhook manzili (EA yoki bridge shu yerga yuboradi)</label><input type="text" readonly value="https://api.sovereign.example/hook/' +
+                    esc(ed.id) +
+                    '"></div>') +
+                '<p class="mut" style="font-size:12px;margin:10px 0">Prototip: ulanish simulyatsiya qilinadi, parol saqlanmaydi va hech qayerga yuborilmaydi. Haqiqiy sinxronizatsiya uchun server tomoni (masalan, MetaApi kabi bridge) kerak.</p>' +
+                '<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn pri" data-act="link">' +
+                ic("link") +
+                (ed.link.on ? "Qayta ulash" : "Ulash") +
+                "</button>" +
+                (ed.link.on
+                  ? '<button class="btn" data-act="unlink">Uzish</button>'
+                  : "") +
+                '</div><div class="steps" id="steps" style="margin-top:10px"></div></div>';
+            }
+          }
+          modal(h);
+        }
+        function ain(k, l, v, t, ph) {
+          return (
+            '<div><label class="f" for="a_' +
+            k +
+            '">' +
+            l +
+            '</label><input type="' +
+            t +
+            '" id="a_' +
+            k +
+            '" value="' +
+            esc(v) +
+            '" placeholder="' +
+            esc(ph) +
+            '"></div>'
+          );
+        }
+        function saveAcc() {
+          const g = (k) => {
+            const e = $("#a_" + k);
+            return e ? e.value.trim() : "";
+          };
+          const name = g("name"),
+            cap = Number(g("capital"));
+          if (!name || !(cap > 0)) {
+            $("#aerr").textContent = "Nom va kapitalni kiriting.";
+            return;
+          }
+          const body = {
+            name,
+            broker: g("broker"),
+            number: g("number"),
+            capital: cap,
+            currency: g("currency"),
+            leverage: g("leverage"),
+            platform: g("platform"),
+          };
+          if (editId === "new") {
+            if (S.accounts.length >= 3) return;
+            const a = Object.assign(
+              { id: "acc-" + uid(), link: { on: false } },
+              body,
+            );
+            S.accounts.push(a);
+            S.sel = a.id;
+          } else Object.assign(accById(editId), body);
+          Store.save("accounts");
+          editId = null;
+          openAccounts();
+          render();
+          toast("Hisob saqlandi");
+        }
+        function simLink() {
+          const a = accById(editId);
+          const st = $("#steps");
+          const srv = $("#a_l_server");
+          const steps = [
+            "Serverga ulanmoqda…",
+            "Read-only kirish tekshirilmoqda…",
+            "Balans va equity olinmoqda…",
+            "Savdolar tarixi yuklanmoqda…",
+          ];
+          let i = 0;
+          st.innerHTML = "";
+          const nx = () => {
+            if (i > 0) st.children[i - 1].className = "ok";
+            if (i >= steps.length) {
+              a.link = {
+                on: true,
+                mode: a.link.mode || "investor",
+                server: srv ? srv.value : a.link.server,
+                last: Date.now(),
+              };
+              Store.save("accounts");
+              toast("Hisob ulandi");
+              setTimeout(() => {
+                openAccounts();
+                render();
+              }, 500);
+              return;
+            }
+            const d = document.createElement("div");
+            d.textContent = steps[i];
+            st.appendChild(d);
+            i++;
+            setTimeout(nx, 550);
+          };
+          nx();
+        }
+
+        /* ---------- events ---------- */
+        document.addEventListener("click", (e) => {
+          const t = e.target.closest(
+            "button,[data-day],[data-chart],[data-pick],[data-scrim]",
+          );
+          if (!t) return;
+          const ds = t.dataset;
+          if (ds.scrim !== undefined && e.target === t) {
+            closeModal();
+            editId = null;
+            return;
+          }
+          if (ds.close !== undefined) {
+            closeModal();
+            editId = null;
+            return;
+          }
+          if (ds.go) {
+            S.view = ds.go;
+            window.scrollTo({ top: 0 });
+            render();
+            return;
+          }
+          if (ds.day) {
+            S.calSel = S.calSel === ds.day ? null : ds.day;
+            document
+              .querySelectorAll(".cell")
+              .forEach((c) =>
+                c.classList.toggle("sel", c.dataset.day === S.calSel),
+              );
+            if (S.calSel) dayPanel();
+            else $("#daypanel").innerHTML = "";
+            return;
+          }
+          if (ds.cal) {
+            S.calM += Number(ds.cal);
+            if (S.calM < 0) {
+              S.calM = 11;
+              S.calY--;
+            }
+            if (S.calM > 11) {
+              S.calM = 0;
+              S.calY++;
+            }
+            S.calSel = null;
+            render();
+            return;
+          }
+          if (ds.openj) {
+            S.jDate = ds.openj;
+            S.view = "jour";
+            S.form = null;
+            render();
+            return;
+          }
+          if (ds.chart) {
+            const [sym, id] = ds.chart.split("|");
+            S.chartSym = sym;
+            S.chartTrade = id;
+            S.view = "chart";
+            window.scrollTo({ top: 0 });
+            render();
+            return;
+          }
+          if (ds.pick) {
+            S.chartTrade = ds.pick;
+            render();
+            return;
+          }
+          if (ds.sym) {
+            S.chartSym = ds.sym;
+            S.chartTrade = null;
+            render();
+            return;
+          }
+          if (ds.jd) {
+            const d = parseYmd(S.jDate);
+            d.setDate(d.getDate() + Number(ds.jd));
+            S.jDate = ymd(d);
+            render();
+            return;
+          }
+          if (ds.score) {
+            jSet((x) => (x.mental = Number(ds.score)));
+            document
+              .querySelectorAll("#score button")
+              .forEach((b) => b.classList.toggle("on", b === t));
+            return;
+          }
+          if (ds.setup) {
+            S.form.setup = S.form.setup === ds.setup ? "" : ds.setup;
+            document
+              .querySelectorAll("[data-setup]")
+              .forEach((b) =>
+                b.classList.toggle("on", b.dataset.setup === S.form.setup),
+              );
+            return;
+          }
+          if (ds.ftag) {
+            const a = S.form.tags,
+              i = a.indexOf(ds.ftag);
+            if (i >= 0) a.splice(i, 1);
+            else a.push(ds.ftag);
+            t.className = a.includes(ds.ftag)
+              ? "on" + (MIST.includes(ds.ftag) ? " x" : "")
+              : "";
+            return;
+          }
+          if (ds.del) {
+            S.manual = S.manual.filter((m) => m.id !== ds.del);
+            Store.save("manual");
+            render();
+            toast("Savdo o‘chirildi");
+            return;
+          }
+          if (ds.rmshot) {
+            e.preventDefault();
+            jSet((x) => {
+              if (x.shots) delete x.shots[ds.rmshot];
+            });
+            render();
+            return;
+          }
+          if (ds.imp) {
+            S.nImp[ds.imp] = !S.nImp[ds.imp];
+            render();
+            return;
+          }
+          if (ds.ncur) {
+            S.nCur[ds.ncur] = !S.nCur[ds.ncur];
+            render();
+            return;
+          }
+          if (ds.art) {
+            openArt(ds.art);
+            return;
+          }
+          if (ds.bt) {
+            const C = chal();
+            C.bt = Math.max(0, C.bt + Number(ds.bt));
+            Store.save("meta");
+            render();
+            return;
+          }
+          if (ds.exp) {
+            exportCsv(ds.exp);
+            return;
+          }
+          if (ds.markread) {
+            if (!S.meta.read.includes(ds.markread)) {
+              S.meta.read.push(ds.markread);
+              Store.save("meta");
+            }
+            openArt(ds.markread);
+            if (S.view === "acad") render();
+            return;
+          }
+          if (ds.edit) {
+            editId = ds.edit;
+            openAccounts();
+            return;
+          }
+          if (ds.lmode) {
+            const a = accById(editId);
+            a.link = Object.assign({}, a.link, { mode: ds.lmode });
+            openAccounts();
+            return;
+          }
+          const act = ds.act;
+          if (!act) return;
+          if (act === "accounts") {
+            editId = null;
+            openAccounts();
+          } else if (act === "theme") {
+            const cur =
+              document.documentElement.getAttribute("data-theme") ||
+              (matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light");
+            const nx = cur === "dark" ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", nx);
+            try {
+              localStorage.setItem(LS + "-theme", nx);
+            } catch (e) {}
+            render();
+          } else if (act === "sync") {
+            const a = accById(S.sel);
+            if (!a.link || !a.link.on) {
+              editId = a.id;
+              openAccounts();
+              return;
+            }
+            t.disabled = true;
+            t.querySelector("svg").style.animation =
+              "spin 0.9s linear infinite";
+            setTimeout(() => {
+              a.link.last = Date.now();
+              Store.save("accounts");
+              renderTop();
+              toast("Balans, pozitsiyalar va tarix yangilandi");
+            }, 1200);
+          } else if (act === "addtrade") addTrade();
+          else if (act === "saveacc") saveAcc();
+          else if (act === "cancelacc") {
+            editId = null;
+            openAccounts();
+          } else if (act === "delacc") {
+            S.accounts = S.accounts.filter((a) => a.id !== editId);
+            S.manual = S.manual.filter((m) => m.acc !== editId);
+            if (!accById(S.sel)) S.sel = S.accounts[0].id;
+            Store.save("accounts");
+            Store.save("manual");
+            editId = null;
+            openAccounts();
+            render();
+          } else if (act === "link") simLink();
+          else if (act === "fresh") {
+            S.meta.mockOff = true;
+            Store.save("meta");
+            render();
+            toast("Namuna savdolar yashirildi");
+          } else if (act === "togglemock") {
+            S.meta.mockOff = !S.meta.mockOff;
+            Store.save("meta");
+            openAccounts();
+            render();
+          } else if (act === "wipe") {
+            if (!wipeArm) {
+              wipeArm = true;
+              openAccounts();
+              setTimeout(() => {
+                wipeArm = false;
+              }, 6000);
+              return;
+            }
+            wipeArm = false;
+            const old = Object.keys(S.journal);
+            S.manual = [];
+            S.journal = {};
+            S.meta.mockOff = true;
+            Store.save("manual");
+            Store.save("meta");
+            old.forEach((k) => Store.save("journal", k));
+            openAccounts();
+            render();
+            toast("Jurnal va savdolar tozalandi");
+          } else if (act === "unlink") {
+            accById(editId).link = { on: false };
+            Store.save("accounts");
+            openAccounts();
+            render();
+          }
+        });
+        document.addEventListener("change", (e) => {
+          const t = e.target;
+          if (t.id === "accsel") {
+            S.sel = t.value;
+            S.chartTrade = null;
+            render();
+            return;
+          }
+          if (t.id === "jdate" && t.value) {
+            S.jDate = t.value;
+            render();
+            return;
+          }
+          if (t.id === "bias") {
+            jSet((x) => (x.bias = t.value));
+            return;
+          }
+          if (t.dataset.rule != null) {
+            jSet((x) => {
+              x.rules = x.rules || {};
+              x.rules[t.dataset.rule] = t.checked;
+            });
+            const n = Object.values(S.journal[S.jDate].rules).filter(
+              Boolean,
+            ).length;
+            const c = t.closest(".card").querySelector(".chip");
+            if (c) c.textContent = n + "/" + RULES.length;
+            return;
+          }
+          if (t.dataset.shot) {
+            onShot(t.dataset.shot, t.files[0]);
+            return;
+          }
+          if (t.id === "chstart" && t.value) {
+            chal().start = t.value;
+            Store.save("meta");
+            render();
+            return;
+          }
+          if (t.dataset.chd) {
+            const C = chal(),
+              i = Number(t.dataset.chd);
+            C.done = C.done.filter((x) => x !== i);
+            if (t.checked) C.done.push(i);
+            Store.save("meta");
+            render();
+            return;
+          }
+          if (t.dataset.lc === "sym") {
+            S.lc = {
+              sym: t.value,
+              bal: S.lc.bal,
+              risk: S.lc.risk,
+              entry: "",
+              sl: "",
+            };
+            render();
+            return;
+          }
+          if (t.dataset.f === "sym" || t.dataset.f === "dir") {
+            S.form[t.dataset.f] = t.value;
+          }
+        });
+        document.addEventListener("input", (e) => {
+          const t = e.target;
+          if (t.dataset.lc && t.dataset.lc !== "sym") {
+            S.lc[t.dataset.lc] = t.value;
+            const o = $("#lcout");
+            if (o) o.innerHTML = lotCalcOut();
+            return;
+          }
+          if (t.dataset.f) {
+            S.form[t.dataset.f] = t.value;
+            const er = $("#ferr");
+            if (er) er.textContent = "";
+            return;
+          }
+          if (t.id === "biasNote") {
+            jSet((x) => (x.biasNote = t.value));
+            return;
+          }
+          if (t.id === "post") {
+            jSet((x) => (x.post = t.value));
+            return;
+          }
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && $("#modal").innerHTML) {
+            closeModal();
+            editId = null;
+          }
+        });
+        const sp = document.createElement("style");
+        sp.textContent = "@keyframes spin{to{transform:rotate(360deg)}}";
+        document.head.appendChild(sp);
+        matchMedia("(prefers-color-scheme: dark)").addEventListener(
+          "change",
+          () => {
+            if (!document.documentElement.getAttribute("data-theme")) render();
+          },
+        );
+
+        render();
+        Store.connect();
+      })();
+    </script>
+  </body>
+</html>
